@@ -37,16 +37,9 @@ public class ScanFragment extends BackstackFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         super.onViewCreated(view, savedInstanceState);
-
         Button scanButton = view.findViewById(R.id.scanView);
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentReplacer.replaceMainFragmentWith(new ServersListFragment());
-            }
-        });
+        scanButton.setOnClickListener(new ScanOnClickListener(fragmentReplacer));
     }
 
     @Override
