@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.OkHttpClient;
 
 import java.util.List;
 
@@ -41,7 +43,8 @@ public class ServersListFragment extends BackstackFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView recyclerView = view.findViewById(R.id.serversRecyclerView);
-        recyclerView.setAdapter(new ShutdownServerAdapter(serverList));
+        EditText shutdownSecondsView = view.findViewById(R.id.shutdownSecondsView);
+        recyclerView.setAdapter(new ShutdownServerAdapter(serverList, new HttpShutdownExecutor(new OkHttpClient()), shutdownSecondsView));
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
     }
 

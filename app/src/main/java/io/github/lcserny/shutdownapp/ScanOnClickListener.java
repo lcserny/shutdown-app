@@ -7,7 +7,7 @@ import java.util.List;
 
 class ScanOnClickListener implements View.OnClickListener {
 
-    private static final String SHUTDOWN_PATH_PATTERN = "http://%s:%s/shutdown"; // TODO
+    private static final String SHUTDOWN_PATH_PATTERN = "http://%s:%s/shutdown";
 
     private final MainFragmentReplacer fragmentReplacer;
     private final NetworkScanner networkScanner;

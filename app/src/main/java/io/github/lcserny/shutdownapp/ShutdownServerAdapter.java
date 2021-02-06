@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,8 @@ import java.util.List;
 public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAdapter.ViewHolder> {
 
     private final List<ShutdownServer> serverList;
+    private final ShutdownExecutor shutdownExecutor;
+    private final EditText shutdownSecondsView;
 
     private Context context;
 
@@ -29,8 +32,10 @@ public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAd
         }
     }
 
-    ShutdownServerAdapter(List<ShutdownServer> serverList) {
+    ShutdownServerAdapter(List<ShutdownServer> serverList, ShutdownExecutor shutdownExecutor, EditText shutdownSecondsView) {
         this.serverList = serverList;
+        this.shutdownExecutor = shutdownExecutor;
+        this.shutdownSecondsView = shutdownSecondsView;
     }
 
     @NonNull
@@ -46,7 +51,7 @@ public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ShutdownServer server = serverList.get(position);
         holder.ipTextView.setText(server.getIp());
-        holder.shutdownButton.setOnClickListener(new ShutdownOnClickListener(context, server));
+        holder.shutdownButton.setOnClickListener(new ShutdownOnClickListener(context, server, shutdownExecutor, shutdownSecondsView));
     }
 
     @Override
