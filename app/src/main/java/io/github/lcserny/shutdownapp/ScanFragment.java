@@ -39,7 +39,7 @@ public class ScanFragment extends BackstackFragment {
         // Setup any handles to view objects here
         super.onViewCreated(view, savedInstanceState);
         Button scanButton = view.findViewById(R.id.scanView);
-        scanButton.setOnClickListener(new ScanOnClickListener(fragmentReplacer));
+        scanButton.setOnClickListener(new ScanOnClickListener(fragmentReplacer, new LocalNetworkScanner()));
     }
 
     @Override

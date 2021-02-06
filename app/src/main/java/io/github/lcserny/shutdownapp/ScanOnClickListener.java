@@ -7,24 +7,24 @@ import java.util.List;
 
 class ScanOnClickListener implements View.OnClickListener {
 
-    private static final String SHUTDOWN_PATH = ":8076/shutdown";
+    private static final String PORT = "8076";
+    private static final String SHUTDOWN_PATH_PATTERN = "http://%s:%s/shutdown"; // TODO
 
     private final MainFragmentReplacer fragmentReplacer;
+    private final NetworkScanner networkScanner;
 
-    public ScanOnClickListener(MainFragmentReplacer fragmentReplacer) {
+    public ScanOnClickListener(MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner) {
         this.fragmentReplacer = fragmentReplacer;
+        this.networkScanner = networkScanner;
     }
 
     @Override
     public void onClick(View v) {
-        // TODO: scan for IPs, when done replace fragment
         List<ShutdownServer> servers = new ArrayList<>();
-        servers.add(new ShutdownServer("1.1.1.1", "http://something"));
-        servers.add(new ShutdownServer("2.2.2.2", "http://something"));
-        servers.add(new ShutdownServer("3.3.3.3", "http://something"));
-        servers.add(new ShutdownServer("4.4.4.4", "http://something"));
-        servers.add(new ShutdownServer("5.5.5.5", "http://something"));
-
+        // TODO: loading icon in UI?
+        for (String ip : networkScanner.scanForIPsWithListenPort(PORT)) {
+            servers.add(new ShutdownServer(ip, String.format(SHUTDOWN_PATH_PATTERN, ip, PORT)));
+        }
         fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(servers));
     }
 }
