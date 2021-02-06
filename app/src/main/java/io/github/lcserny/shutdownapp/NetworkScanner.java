@@ -1,7 +1,9 @@
 package io.github.lcserny.shutdownapp;
 
 import java.util.List;
+import java.util.Map;
 
 interface NetworkScanner {
-    List<String> scanForIPsWithListenPort(String port);
+
+    Map<String, String> scanForIPsWithListenPort(String port, String subnetToInclude, List<String> hostsToFind);
 }
