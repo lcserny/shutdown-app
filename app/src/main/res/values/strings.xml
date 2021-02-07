@@ -2,5 +2,6 @@
     <string name="app_name">ShutdownApp</string>
     <string name="proxy_port">8077</string>
     <string name="scan_button_label">Scan</string>
+    <string name="shutdown_delay">Shutdown delay</string>
     <string name="shutdown_button_label">Shutdown</string>
 </resources>
