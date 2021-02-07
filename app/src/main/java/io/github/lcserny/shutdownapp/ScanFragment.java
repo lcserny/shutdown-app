@@ -15,12 +15,14 @@ public class ScanFragment extends BackstackFragment {
     private static final String BACKSTACK_NAME = "scanFragment";
 
     private MainFragmentReplacer fragmentReplacer;
+    private Context context;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof MainActivity) {
             this.fragmentReplacer = (MainFragmentReplacer) context;
+            this.context = context;
         }
     }
 
@@ -41,7 +43,8 @@ public class ScanFragment extends BackstackFragment {
         super.onViewCreated(view, savedInstanceState);
         EditText portView = view.findViewById(R.id.portView);
         Button scanButton = view.findViewById(R.id.scanView);
-        scanButton.setOnClickListener(new ScanOnClickListener(fragmentReplacer, new LocalNetworkScanner(), portView.getText().toString()));
+        scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
+                new LocalNetworkScanner(), portView.getText().toString()));
     }
 
     @Override

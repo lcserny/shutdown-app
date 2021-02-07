@@ -22,7 +22,6 @@ class ShutdownOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         final String response = shutdownExecutor.shutdown(server, shutdownSecondsView.getText().toString());
-        Toast toast = Toast.makeText(context, response, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
     }
 }

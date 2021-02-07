@@ -1,6 +1,8 @@
 package io.github.lcserny.shutdownapp;
 
+import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +11,13 @@ class ScanOnClickListener implements View.OnClickListener {
 
     private static final String SHUTDOWN_PATH_PATTERN = "http://%s:%s/shutdown";
 
+    private final Context context;
     private final MainFragmentReplacer fragmentReplacer;
     private final NetworkScanner networkScanner;
     private final int portToScan;
 
-    public ScanOnClickListener(MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner, String portToScan) {
+    public ScanOnClickListener(Context context, MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner, String portToScan) {
+        this.context = context;
         this.fragmentReplacer = fragmentReplacer;
         this.networkScanner = networkScanner;
         this.portToScan = Integer.parseInt(portToScan);
@@ -26,6 +30,10 @@ class ScanOnClickListener implements View.OnClickListener {
         for (String host : networkScanner.scanForIPsWithListenPort(portToScan)) {
             servers.add(new ShutdownServer(host, String.format(SHUTDOWN_PATH_PATTERN, host, portToScan)));
         }
-        fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(servers));
+        if (!servers.isEmpty()) {
+            fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(servers));
+        } else {
+            Toast.makeText(context, "No servers found", Toast.LENGTH_SHORT).show();
+        }
     }
 }
