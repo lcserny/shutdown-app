@@ -14,31 +14,28 @@ import java.util.concurrent.TimeUnit;
 class HttpShutdownExecutor implements ShutdownExecutor {
 
     private final OkHttpClient httpClient;
-    private final ExecutorService executorService;
 
     HttpShutdownExecutor(OkHttpClient httpClient) {
         this.httpClient = httpClient;
-        this.executorService = Executors.newCachedThreadPool();
-    }
-
-    HttpShutdownExecutor(OkHttpClient httpClient, ExecutorService executorService) {
-        this.httpClient = httpClient;
-        this.executorService = executorService;
     }
 
     @Override
     public String shutdown(ShutdownServer server, String seconds) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
         if (seconds.startsWith("-")) {
             seconds = "0";
         }
 
         final Request request = new Request.Builder().url(server.getShutdownUrl() + "?seconds=" + seconds).build();
         final ShutdownRunnable shutdownRunnable = new ShutdownRunnable(httpClient, request);
+        executorService.execute(shutdownRunnable);
 
-        executorService.submit(shutdownRunnable);
         executorService.shutdown();
         try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
         } catch (InterruptedException e) {
             Log.e(HttpShutdownExecutor.class.getSimpleName(), e.getMessage());
         }

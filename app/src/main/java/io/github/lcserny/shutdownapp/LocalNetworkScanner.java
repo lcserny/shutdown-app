@@ -13,23 +13,14 @@ class LocalNetworkScanner implements NetworkScanner {
 
     private static final String SUBNET_TO_INCLUDE = "192.168.100";
 
-    private final ExecutorService executorService;
-
-    public LocalNetworkScanner(ExecutorService executorService) {
-        this.executorService = executorService;
-    }
-
-    public LocalNetworkScanner() {
-        this.executorService = Executors.newCachedThreadPool();
-    }
-
     @Override
     public List<String> scanForIPsWithListenPort(final int port) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         final List<String> foundHosts = new ArrayList<>();
 
         for (int i = 0; i < 256; i++) {
             final String builtAddress = SUBNET_TO_INCLUDE + "." + i;
-            executorService.submit(new Runnable() {
+            executorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -45,7 +36,9 @@ class LocalNetworkScanner implements NetworkScanner {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
         } catch (InterruptedException e) {
             Log.e(LocalNetworkScanner.class.getSimpleName(), e.getMessage());
         }
@@ -57,7 +50,7 @@ class LocalNetworkScanner implements NetworkScanner {
         SocketAddress socketAddress = new InetSocketAddress(hostName, port);
         try (Socket socket = new Socket()) {
             try {
-                socket.connect(socketAddress, 1000);
+                socket.connect(socketAddress, 3000);
                 return true;
             } catch (IOException e) {
                 return false;
