@@ -1,12 +1,7 @@
 package io.github.lcserny.shutdownapp;
 
-import android.util.Log;
-
-import java.io.IOException;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 class LocalNetworkScanner implements NetworkScanner {
@@ -15,46 +10,14 @@ class LocalNetworkScanner implements NetworkScanner {
 
     @Override
     public List<String> scanForIPsWithListenPort(final int port) {
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        final List<String> foundHosts = new ArrayList<>();
-
+        CachedThreadsExecutor executor = new CachedThreadsExecutor();
+        List<String> foundHosts = new ArrayList<>();
+        List<Runnable> runnableList = new ArrayList<>();
         for (int i = 0; i < 256; i++) {
-            final String builtAddress = SUBNET_TO_INCLUDE + "." + i;
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (LocalNetworkScanner.this.isSocketAlive(builtAddress, port)) {
-                            foundHosts.add(builtAddress);
-                        }
-                    } catch (IOException e) {
-                        Log.e(LocalNetworkScanner.class.getSimpleName(), e.getMessage());
-                    }
-                }
-            });
+            String builtAddress = SUBNET_TO_INCLUDE + "." + i;
+            runnableList.add(new NetworkScanningRunnable(builtAddress, port, foundHosts));
         }
-
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            Log.e(LocalNetworkScanner.class.getSimpleName(), e.getMessage());
-        }
-
+        executor.execute(runnableList, new ExecutionTimeout(10, TimeUnit.SECONDS));
         return foundHosts;
-    }
-
-    private boolean isSocketAlive(String hostName, int port) throws IOException {
-        SocketAddress socketAddress = new InetSocketAddress(hostName, port);
-        try (Socket socket = new Socket()) {
-            try {
-                socket.connect(socketAddress, 3000);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
-        }
     }
 }

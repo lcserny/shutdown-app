@@ -15,7 +15,7 @@ import java.util.List;
 public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAdapter.ViewHolder> {
 
     private final List<ShutdownServer> serverList;
-    private final ShutdownExecutor shutdownExecutor;
+    private final ShutdownPerformer shutdownPerformer;
     private final EditText shutdownSecondsView;
 
     private Context context;
@@ -32,9 +32,9 @@ public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAd
         }
     }
 
-    ShutdownServerAdapter(List<ShutdownServer> serverList, ShutdownExecutor shutdownExecutor, EditText shutdownSecondsView) {
+    ShutdownServerAdapter(List<ShutdownServer> serverList, ShutdownPerformer shutdownPerformer, EditText shutdownSecondsView) {
         this.serverList = serverList;
-        this.shutdownExecutor = shutdownExecutor;
+        this.shutdownPerformer = shutdownPerformer;
         this.shutdownSecondsView = shutdownSecondsView;
     }
 
@@ -51,7 +51,7 @@ public class ShutdownServerAdapter extends RecyclerView.Adapter<ShutdownServerAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ShutdownServer server = serverList.get(position);
         holder.ipTextView.setText(server.getIp());
-        holder.shutdownButton.setOnClickListener(new ShutdownOnClickListener(context, server, shutdownExecutor, shutdownSecondsView));
+        holder.shutdownButton.setOnClickListener(new ShutdownOnClickListener(context, server, shutdownPerformer, shutdownSecondsView));
     }
 
     @Override

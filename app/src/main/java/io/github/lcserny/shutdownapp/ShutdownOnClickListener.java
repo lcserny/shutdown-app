@@ -9,19 +9,19 @@ class ShutdownOnClickListener implements View.OnClickListener {
 
     private final Context context;
     private final ShutdownServer server;
-    private final ShutdownExecutor shutdownExecutor;
+    private final ShutdownPerformer shutdownPerformer;
     private final EditText shutdownSecondsView;
 
-    ShutdownOnClickListener(Context context, ShutdownServer server, ShutdownExecutor shutdownExecutor, EditText shutdownSecondsView) {
+    ShutdownOnClickListener(Context context, ShutdownServer server, ShutdownPerformer shutdownPerformer, EditText shutdownSecondsView) {
         this.context = context;
         this.server = server;
-        this.shutdownExecutor = shutdownExecutor;
+        this.shutdownPerformer = shutdownPerformer;
         this.shutdownSecondsView = shutdownSecondsView;
     }
 
     @Override
     public void onClick(View v) {
-        final String response = shutdownExecutor.shutdown(server, shutdownSecondsView.getText().toString());
+        final String response = shutdownPerformer.shutdown(server, shutdownSecondsView.getText().toString());
         Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
     }
 }

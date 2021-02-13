@@ -44,7 +44,7 @@ public class ServersListFragment extends BackstackFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView recyclerView = view.findViewById(R.id.serversRecyclerView);
         EditText shutdownSecondsView = view.findViewById(R.id.shutdownSecondsView);
-        recyclerView.setAdapter(new ShutdownServerAdapter(serverList, new HttpShutdownExecutor(new OkHttpClient()), shutdownSecondsView));
+        recyclerView.setAdapter(new ShutdownServerAdapter(serverList, new HttpShutdownPerformer(new OkHttpClient()), shutdownSecondsView));
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
     }
 

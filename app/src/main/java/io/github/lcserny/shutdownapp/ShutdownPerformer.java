@@ -1,5 +1,5 @@
 package io.github.lcserny.shutdownapp;
 
-interface ShutdownExecutor {
+interface ShutdownPerformer {
     String shutdown(ShutdownServer server, String seconds);
 }
