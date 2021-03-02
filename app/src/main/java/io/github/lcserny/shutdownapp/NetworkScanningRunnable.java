@@ -10,7 +10,7 @@ import java.util.List;
 
 class NetworkScanningRunnable implements Runnable {
 
-    private static final int SOCKET_TIMEOUT = 3000;
+    private static final int SOCKET_TIMEOUT = 5000;
 
     private final String address;
     private final int port;
