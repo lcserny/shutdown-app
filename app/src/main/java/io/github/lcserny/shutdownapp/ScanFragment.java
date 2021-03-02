@@ -1,6 +1,8 @@
 package io.github.lcserny.shutdownapp;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +45,9 @@ public class ScanFragment extends BackstackFragment {
         super.onViewCreated(view, savedInstanceState);
         EditText portView = view.findViewById(R.id.portView);
         Button scanButton = view.findViewById(R.id.scanView);
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
-                new LocalNetworkScanner(), portView.getText().toString()));
+                new LocalNetworkScanner(wifiManager), portView.getText().toString()));
     }
 
     @Override
