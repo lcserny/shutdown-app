@@ -5,4 +5,8 @@
     <item android:id="@+id/mainMenuBack"
           android:title="@string/scan_button_label"
           app:showAsAction="always"/>
+
+    <item android:id="@+id/mainMenuConfig"
+          android:title="@string/config_label"
+          app:showAsAction="always"/>
 </menu>

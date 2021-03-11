@@ -10,22 +10,22 @@ import java.util.List;
 
 class NetworkScanningRunnable implements Runnable {
 
-    private static final int SOCKET_TIMEOUT = 3000;
-
     private final String address;
     private final int port;
     private final List<String> foundHosts;
+    private final int socketTimeout;
 
-    NetworkScanningRunnable(String address, int port, List<String> foundHosts) {
+    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout) {
         this.address = address;
         this.port = port;
         this.foundHosts = foundHosts;
+        this.socketTimeout = socketTimeout;
     }
 
     @Override
     public void run() {
         try {
-            if (isSocketAlive(address, port)) {
+            if (isSocketAlive(address, port, socketTimeout)) {
                 foundHosts.add(address);
             }
         } catch (IOException e) {
@@ -33,11 +33,11 @@ class NetworkScanningRunnable implements Runnable {
         }
     }
 
-    private boolean isSocketAlive(String hostName, int port) throws IOException {
+    private boolean isSocketAlive(String hostName, int port, int socketTimeout) throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(hostName, port);
         try (Socket socket = new Socket()) {
             try {
-                socket.connect(socketAddress, SOCKET_TIMEOUT);
+                socket.connect(socketAddress, socketTimeout);
                 return true;
             } catch (IOException e) {
                 return false;
