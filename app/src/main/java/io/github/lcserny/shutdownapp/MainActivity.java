@@ -10,6 +10,7 @@ import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
 
+    public static final String SHUTDOWN_APP_DB = "shutdownApp-db";
     private AppDatabase appDatabase;
 
     public AppDatabase getAppDatabase() {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "shutdownApp-db")
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, SHUTDOWN_APP_DB)
                 .allowMainThreadQueries()
                 .build();
 

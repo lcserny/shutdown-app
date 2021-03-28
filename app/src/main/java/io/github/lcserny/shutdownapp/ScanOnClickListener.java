@@ -15,10 +15,10 @@ class ScanOnClickListener implements View.OnClickListener {
     private final MainFragmentReplacer fragmentReplacer;
     private final NetworkScanner networkScanner;
     private final int portToScan;
-    private final LogEntryDAO logEntryDAO;
+    private final LogPersistenceEnabledDaoWrapper logEntryDAO;
 
     public ScanOnClickListener(Context context, MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner,
-                               String portToScan, LogEntryDAO logEntryDAO) {
+                               String portToScan, LogPersistenceEnabledDaoWrapper logEntryDAO) {
         this.context = context;
         this.fragmentReplacer = fragmentReplacer;
         this.networkScanner = networkScanner;

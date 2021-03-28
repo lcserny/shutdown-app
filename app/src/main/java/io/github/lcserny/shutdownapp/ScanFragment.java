@@ -18,7 +18,7 @@ public class ScanFragment extends BackstackFragment {
 
     private MainFragmentReplacer fragmentReplacer;
     private Context context;
-    private LogEntryDAO logEntryDAO;
+    private LogPersistenceEnabledDaoWrapper logEntryDAO;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -26,7 +26,10 @@ public class ScanFragment extends BackstackFragment {
         if (context instanceof MainActivity) {
             this.fragmentReplacer = (MainFragmentReplacer) context;
             this.context = context;
-            this.logEntryDAO = ((MainActivity) context).getAppDatabase().logEntryDAO();
+
+            LogEntryDAO logEntryDAO = ((MainActivity) context).getAppDatabase().logEntryDAO();
+            SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            this.logEntryDAO = new LogPersistenceEnabledDaoWrapper(preferences, logEntryDAO);
         }
     }
 

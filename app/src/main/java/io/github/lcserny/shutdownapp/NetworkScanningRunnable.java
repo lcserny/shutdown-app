@@ -14,9 +14,9 @@ class NetworkScanningRunnable implements Runnable {
     private final int port;
     private final List<String> foundHosts;
     private final int socketTimeout;
-    private final LogEntryDAO logEntryDAO;
+    private final LogPersistenceEnabledDaoWrapper logEntryDAO;
 
-    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout, LogEntryDAO logEntryDAO) {
+    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout, LogPersistenceEnabledDaoWrapper logEntryDAO) {
         this.address = address;
         this.port = port;
         this.foundHosts = foundHosts;

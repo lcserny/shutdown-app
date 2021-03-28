@@ -16,9 +16,9 @@ class LocalNetworkScanner implements NetworkScanner {
 
     private final WifiManager wifiManager;
     private final SharedPreferences sharedPreferences;
-    private final LogEntryDAO logEntryDAO;
+    private final LogPersistenceEnabledDaoWrapper logEntryDAO;
 
-    LocalNetworkScanner(WifiManager wifiManager, SharedPreferences sharedPreferences, LogEntryDAO logEntryDAO) {
+    LocalNetworkScanner(WifiManager wifiManager, SharedPreferences sharedPreferences, LogPersistenceEnabledDaoWrapper logEntryDAO) {
         this.wifiManager = wifiManager;
         this.sharedPreferences = sharedPreferences;
         this.logEntryDAO = logEntryDAO;
