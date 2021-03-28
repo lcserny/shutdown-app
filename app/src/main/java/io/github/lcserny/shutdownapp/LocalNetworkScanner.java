@@ -26,6 +26,9 @@ class LocalNetworkScanner implements NetworkScanner {
 
     @Override
     public List<String> scanForIPsWithListenPort(final int port) {
+        // TODO: use a mutex for these lists
+        List<String> foundHosts = new ArrayList<>();
+        List<Runnable> runnableList = new ArrayList<>();
         List<LogEntry> logEntries = new ArrayList<>();
 
         long start = System.currentTimeMillis();
@@ -35,9 +38,6 @@ class LocalNetworkScanner implements NetworkScanner {
         start = System.currentTimeMillis();
         CachedThreadsExecutor executor = new CachedThreadsExecutor();
         logEntries.add(LogEntryConverter.convertForTimeTook("create a new CachedThreadExecutor", start));
-
-        List<String> foundHosts = new ArrayList<>();
-        List<Runnable> runnableList = new ArrayList<>();
 
         start = System.currentTimeMillis();
         WifiInfo connectionInfo = wifiManager.getConnectionInfo();
@@ -55,7 +55,7 @@ class LocalNetworkScanner implements NetworkScanner {
 
         for (int i = 0; i < 256; i++) {
             String builtAddress = prefix + i;
-            runnableList.add(new NetworkScanningRunnable(builtAddress, port, foundHosts, socketTimeout, logEntryDAO));
+            runnableList.add(new NetworkScanningRunnable(builtAddress, port, foundHosts, socketTimeout, logEntries));
         }
 
         start = System.currentTimeMillis();

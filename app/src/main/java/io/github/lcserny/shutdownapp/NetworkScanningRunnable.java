@@ -14,14 +14,14 @@ class NetworkScanningRunnable implements Runnable {
     private final int port;
     private final List<String> foundHosts;
     private final int socketTimeout;
-    private final LogPersistenceEnabledDaoWrapper logEntryDAO;
+    private final List<LogEntry> logEntries;
 
-    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout, LogPersistenceEnabledDaoWrapper logEntryDAO) {
+    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout, List<LogEntry> logEntries) {
         this.address = address;
         this.port = port;
         this.foundHosts = foundHosts;
         this.socketTimeout = socketTimeout;
-        this.logEntryDAO = logEntryDAO;
+        this.logEntries = logEntries;
     }
 
     @Override
@@ -34,7 +34,7 @@ class NetworkScanningRunnable implements Runnable {
         } catch (IOException e) {
             Log.e(NetworkScanningRunnable.class.getSimpleName(), e.getMessage());
         }
-        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("ping address " + address, start));
+        logEntries.add(LogEntryConverter.convertForTimeTook("ping address " + address, start));
     }
 
     private boolean isSocketAlive(String hostName, int port, int socketTimeout) throws IOException {
