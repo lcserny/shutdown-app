@@ -2,17 +2,17 @@ package io.github.lcserny.shutdownapp;
 
 import java.util.Date;
 
-class LogEntry {
+class LogDTO {
 
     private final Date date;
     private final String text;
 
-    public LogEntry(Date date, String text) {
+    public LogDTO(Date date, String text) {
         this.date = date;
         this.text = text;
     }
 
-    public LogEntry(String text) {
+    public LogDTO(String text) {
         this(new Date(), text);
     }
 

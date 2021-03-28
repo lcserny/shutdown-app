@@ -15,7 +15,7 @@ import java.util.List;
 public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder> {
 
     private final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-    private final List<LogEntry> latestLogs;
+    private final List<LogDTO> latestLogs;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -27,7 +27,7 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder> {
         }
     }
 
-    LogsAdapter(List<LogEntry> latestLogs) {
+    LogsAdapter(List<LogDTO> latestLogs) {
         this.latestLogs = latestLogs;
     }
 
@@ -42,8 +42,8 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        LogEntry logEntry = latestLogs.get(position);
-        String text = String.format("[%s] %s", dateFormat.format(logEntry.getDate()), logEntry.getText());
+        LogDTO logDTO = latestLogs.get(position);
+        String text = String.format("[%s] %s", dateFormat.format(logDTO.getDate()), logDTO.getText());
         holder.logTextView.setText(text);
     }
 

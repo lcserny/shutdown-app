@@ -22,14 +22,14 @@ public class LogsFragment extends BackstackFragment {
     private Context context;
     private SharedPreferences preferences;
 
-    private final List<LogEntry> latestLogs;
+    private final List<LogDTO> latestLogs;
 
     public LogsFragment() {
         // TODO: send in constructor storage object to get latest 250 logs from
         this.latestLogs = new ArrayList<>();
-        this.latestLogs.add(new LogEntry("A log entry"));
-        this.latestLogs.add(new LogEntry("Another entry"));
-        this.latestLogs.add(new LogEntry("a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here"));
+        this.latestLogs.add(new LogDTO("A log entry"));
+        this.latestLogs.add(new LogDTO("Another entry"));
+        this.latestLogs.add(new LogDTO("a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here"));
     }
 
     @Override
