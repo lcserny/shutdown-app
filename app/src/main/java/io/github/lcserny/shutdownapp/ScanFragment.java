@@ -18,6 +18,7 @@ public class ScanFragment extends BackstackFragment {
 
     private MainFragmentReplacer fragmentReplacer;
     private Context context;
+    private LogEntryDAO logEntryDAO;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -25,6 +26,7 @@ public class ScanFragment extends BackstackFragment {
         if (context instanceof MainActivity) {
             this.fragmentReplacer = (MainFragmentReplacer) context;
             this.context = context;
+            this.logEntryDAO = ((MainActivity) context).getAppDatabase().logEntryDAO();
         }
     }
 
@@ -50,10 +52,16 @@ public class ScanFragment extends BackstackFragment {
             return;
         }
 
+        long start = System.currentTimeMillis();
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("create WifiManager in ScanFragment", start));
+
+        start = System.currentTimeMillis();
         SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("get SharedPreferences in ScanFragment", start));
+
         scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
-                new LocalNetworkScanner(wifiManager, preferences), portView.getText().toString()));
+                new LocalNetworkScanner(wifiManager, preferences, logEntryDAO), portView.getText().toString(), logEntryDAO));
     }
 
     @Override

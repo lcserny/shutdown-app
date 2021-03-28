@@ -14,16 +14,19 @@ class NetworkScanningRunnable implements Runnable {
     private final int port;
     private final List<String> foundHosts;
     private final int socketTimeout;
+    private final LogEntryDAO logEntryDAO;
 
-    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout) {
+    NetworkScanningRunnable(String address, int port, List<String> foundHosts, int socketTimeout, LogEntryDAO logEntryDAO) {
         this.address = address;
         this.port = port;
         this.foundHosts = foundHosts;
         this.socketTimeout = socketTimeout;
+        this.logEntryDAO = logEntryDAO;
     }
 
     @Override
     public void run() {
+        long start = System.currentTimeMillis();
         try {
             if (isSocketAlive(address, port, socketTimeout)) {
                 foundHosts.add(address);
@@ -31,6 +34,7 @@ class NetworkScanningRunnable implements Runnable {
         } catch (IOException e) {
             Log.e(NetworkScanningRunnable.class.getSimpleName(), e.getMessage());
         }
+        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("ping address " + address, start));
     }
 
     private boolean isSocketAlive(String hostName, int port, int socketTimeout) throws IOException {

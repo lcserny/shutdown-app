@@ -1,7 +1,6 @@
 package io.github.lcserny.shutdownapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,24 +11,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LogsFragment extends BackstackFragment {
 
+    private static final int LOG_AMOUNT = 1500;
     private static final String BACKSTACK_NAME = "logsFragment";
 
     private Context context;
-    private SharedPreferences preferences;
 
     private final List<LogDTO> latestLogs;
 
-    public LogsFragment() {
-        // TODO: send in constructor storage object to get latest 250 logs from
-        this.latestLogs = new ArrayList<>();
-        this.latestLogs.add(new LogDTO("A log entry"));
-        this.latestLogs.add(new LogDTO("Another entry"));
-        this.latestLogs.add(new LogDTO("a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here, a Really long entry here"));
+    public LogsFragment(LogEntryDAO logEntryDAO) {
+        this.latestLogs = LogEntryConverter.convertEntries(logEntryDAO.getLastN(LOG_AMOUNT));
     }
 
     @Override
@@ -37,7 +31,6 @@ public class LogsFragment extends BackstackFragment {
         super.onAttach(context);
         if (context instanceof MainActivity) {
             this.context = context;
-            this.preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         }
     }
 

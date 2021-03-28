@@ -15,12 +15,15 @@ class ScanOnClickListener implements View.OnClickListener {
     private final MainFragmentReplacer fragmentReplacer;
     private final NetworkScanner networkScanner;
     private final int portToScan;
+    private final LogEntryDAO logEntryDAO;
 
-    public ScanOnClickListener(Context context, MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner, String portToScan) {
+    public ScanOnClickListener(Context context, MainFragmentReplacer fragmentReplacer, NetworkScanner networkScanner,
+                               String portToScan, LogEntryDAO logEntryDAO) {
         this.context = context;
         this.fragmentReplacer = fragmentReplacer;
         this.networkScanner = networkScanner;
         this.portToScan = Integer.parseInt(portToScan);
+        this.logEntryDAO = logEntryDAO;
     }
 
     @Override
@@ -31,7 +34,9 @@ class ScanOnClickListener implements View.OnClickListener {
             servers.add(new ShutdownServer(host, String.format(SHUTDOWN_PATH_PATTERN, host, portToScan)));
         }
         if (!servers.isEmpty()) {
+            long start = System.currentTimeMillis();
             fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(servers));
+            logEntryDAO.insert(LogEntryConverter.convertForTimeTook("switch to new ServersList fragment", start));
         } else {
             Toast.makeText(context, "No servers found", Toast.LENGTH_SHORT).show();
         }

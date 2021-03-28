@@ -6,12 +6,24 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
+
+    private AppDatabase appDatabase;
+
+    public AppDatabase getAppDatabase() {
+        return appDatabase;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "shutdownApp-db")
+                .allowMainThreadQueries()
+                .build();
+
         setContentView(R.layout.activity_main);
         replaceMainFragmentWith(new ScanFragment());
     }
@@ -28,12 +40,15 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
         if (id == R.id.mainMenuBack) {
             replaceMainFragmentWith(new ScanFragment());
             return true;
-        } else if (id == R.id.mainMenuConfig) {
-            replaceMainFragmentWith(new ConfigFragment());
-            return true;
-        } else if (id == R.id.mainMenuLogs) {
-            replaceMainFragmentWith(new LogsFragment());
-            return true;
+        } else {
+            final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
+            if (id == R.id.mainMenuConfig) {
+                replaceMainFragmentWith(new ConfigFragment(logEntryDAO));
+                return true;
+            } else if (id == R.id.mainMenuLogs) {
+                replaceMainFragmentWith(new LogsFragment(logEntryDAO));
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

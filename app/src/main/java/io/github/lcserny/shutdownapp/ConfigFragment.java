@@ -20,6 +20,11 @@ public class ConfigFragment extends BackstackFragment {
 
     private Context context;
     private SharedPreferences preferences;
+    private LogEntryDAO logEntryDAO;
+
+    public ConfigFragment(LogEntryDAO logEntryDAO) {
+        this.logEntryDAO = logEntryDAO;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,6 +51,9 @@ public class ConfigFragment extends BackstackFragment {
 
         Button saveBtn = view.findViewById(R.id.saveView);
         saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context, socketTimeoutView));
+
+        Button clearLogsBtn = view.findViewById(R.id.deleteLogsBtn);
+        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(logEntryDAO));
     }
 
     @Override
