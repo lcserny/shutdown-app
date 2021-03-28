@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static io.github.lcserny.shutdownapp.EnableLOgPersistenceOnCheckedListener.LOG_PERSISTENCE_KEY;
 import static io.github.lcserny.shutdownapp.LocalNetworkScanner.DEFAULT_SOCKET_TIMEOUT;
 import static io.github.lcserny.shutdownapp.LocalNetworkScanner.SOCKET_TIMEOUT_KEY;
 
@@ -51,6 +53,11 @@ public class ConfigFragment extends BackstackFragment {
 
         Button saveBtn = view.findViewById(R.id.saveView);
         saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context, socketTimeoutView));
+
+        boolean logPersistanceEnabled = preferences.getBoolean(LOG_PERSISTENCE_KEY, false);
+        CheckBox persistLogsCheckbox = view.findViewById(R.id.enableLogSavingCheck);
+        persistLogsCheckbox.setChecked(logPersistanceEnabled);
+        persistLogsCheckbox.setOnCheckedChangeListener(new EnableLOgPersistenceOnCheckedListener(preferences));
 
         Button clearLogsBtn = view.findViewById(R.id.deleteLogsBtn);
         clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(logEntryDAO));

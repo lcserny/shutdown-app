@@ -10,4 +10,5 @@
     <string name="logs_label">Logs</string>
     <string name="delete_logs_btn_label">Delete Log Entries</string>
     <string name="socket_timeout_label">Socket Timeout (ms)</string>
+    <string name="enable_log_saving_label">Persist Logs in Database</string>
 </resources>
