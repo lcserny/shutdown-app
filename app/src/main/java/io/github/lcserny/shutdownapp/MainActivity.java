@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
         } else if (id == R.id.mainMenuConfig) {
             replaceMainFragmentWith(new ConfigFragment());
             return true;
+        } else if (id == R.id.mainMenuLogs) {
+            replaceMainFragmentWith(new LogsFragment());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

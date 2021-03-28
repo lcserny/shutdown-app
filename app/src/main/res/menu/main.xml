@@ -9,4 +9,8 @@
     <item android:id="@+id/mainMenuConfig"
           android:title="@string/config_label"
           app:showAsAction="always"/>
+
+    <item android:id="@+id/mainMenuLogs"
+          android:title="@string/logs_label"
+          app:showAsAction="always"/>
 </menu>
