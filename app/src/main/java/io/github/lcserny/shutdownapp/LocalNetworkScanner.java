@@ -14,9 +14,9 @@ class LocalNetworkScanner implements NetworkScanner {
     public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
     public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
 
-    private final WifiManager wifiManager;
-    private final SharedPreferences sharedPreferences;
-    private final LogPersistenceEnabledDaoWrapper logEntryDAO;
+    protected final WifiManager wifiManager;
+    protected final SharedPreferences sharedPreferences;
+    protected final LogPersistenceEnabledDaoWrapper logEntryDAO;
 
     LocalNetworkScanner(WifiManager wifiManager, SharedPreferences sharedPreferences, LogPersistenceEnabledDaoWrapper logEntryDAO) {
         this.wifiManager = wifiManager;

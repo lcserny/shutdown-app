@@ -64,7 +64,7 @@ public class ScanFragment extends BackstackFragment {
         logEntryDAO.insert(LogEntryConverter.convertForTimeTook("get SharedPreferences in ScanFragment", start));
 
         scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
-                new LocalNetworkScanner(wifiManager, preferences, logEntryDAO), portView.getText().toString(), logEntryDAO));
+                new CachedLocalNetworkScanner(wifiManager, preferences, logEntryDAO), portView.getText().toString(), logEntryDAO));
     }
 
     @Override
