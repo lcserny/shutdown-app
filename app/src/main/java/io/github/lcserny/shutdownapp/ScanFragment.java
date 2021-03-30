@@ -18,7 +18,12 @@ public class ScanFragment extends BackstackFragment {
 
     private MainFragmentReplacer fragmentReplacer;
     private Context context;
-    private LogPersistenceEnabledDaoWrapper logEntryDAO;
+    private LogPersistenceEnabledDaoWrapper logEntryDAOWrapper;
+    private LogEntryDAO logEntryDAO;
+
+    public ScanFragment(LogEntryDAO logEntryDAO) {
+        this.logEntryDAO = logEntryDAO;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -26,10 +31,8 @@ public class ScanFragment extends BackstackFragment {
         if (context instanceof MainActivity) {
             this.fragmentReplacer = (MainFragmentReplacer) context;
             this.context = context;
-
-            LogEntryDAO logEntryDAO = ((MainActivity) context).getAppDatabase().logEntryDAO();
             SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            this.logEntryDAO = new LogPersistenceEnabledDaoWrapper(preferences, logEntryDAO);
+            this.logEntryDAOWrapper = new LogPersistenceEnabledDaoWrapper(preferences, logEntryDAO);
         }
     }
 
@@ -57,14 +60,14 @@ public class ScanFragment extends BackstackFragment {
 
         long start = System.currentTimeMillis();
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("create WifiManager in ScanFragment", start));
+        logEntryDAOWrapper.insert(LogEntryConverter.convertForTimeTook("create WifiManager in ScanFragment", start));
 
         start = System.currentTimeMillis();
         SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        logEntryDAO.insert(LogEntryConverter.convertForTimeTook("get SharedPreferences in ScanFragment", start));
+        logEntryDAOWrapper.insert(LogEntryConverter.convertForTimeTook("get SharedPreferences in ScanFragment", start));
 
         scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
-                new CachedLocalNetworkScanner(wifiManager, preferences, logEntryDAO), portView.getText().toString(), logEntryDAO));
+                new CachedLocalNetworkScanner(wifiManager, preferences, logEntryDAOWrapper), portView.getText().toString(), logEntryDAOWrapper));
     }
 
     @Override

@@ -13,10 +13,6 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
     public static final String SHUTDOWN_APP_DB = "shutdownApp-db";
     private AppDatabase appDatabase;
 
-    public AppDatabase getAppDatabase() {
-        return appDatabase;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
                 .build();
 
         setContentView(R.layout.activity_main);
-        replaceMainFragmentWith(new ScanFragment());
+        replaceMainFragmentWith(new ScanFragment(appDatabase.logEntryDAO()));
     }
 
     @Override
@@ -37,20 +33,19 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
         int id = item.getItemId();
         if (id == R.id.mainMenuBack) {
-            replaceMainFragmentWith(new ScanFragment());
+            replaceMainFragmentWith(new ScanFragment(logEntryDAO));
             return true;
-        } else {
-            final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
-            if (id == R.id.mainMenuConfig) {
-                replaceMainFragmentWith(new ConfigFragment(logEntryDAO));
-                return true;
-            } else if (id == R.id.mainMenuLogs) {
-                replaceMainFragmentWith(new LogsFragment(logEntryDAO));
-                return true;
-            }
+        } else if (id == R.id.mainMenuConfig) {
+            replaceMainFragmentWith(new ConfigFragment(logEntryDAO));
+            return true;
+        } else if (id == R.id.mainMenuLogs) {
+            replaceMainFragmentWith(new LogsFragment(logEntryDAO));
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
