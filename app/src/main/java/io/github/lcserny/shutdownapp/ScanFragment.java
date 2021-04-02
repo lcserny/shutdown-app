@@ -12,18 +12,16 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ScanFragment extends BackstackFragment {
+public class ScanFragment extends AbstractDatabaseBacktrackFragment {
 
     private static final String BACKSTACK_NAME = "scanFragment";
-
-    private final AppDatabase appDatabase;
 
     private Context context;
     private MainFragmentReplacer fragmentReplacer;
     private LogPersistenceEnabledDaoWrapper logEntryDAOWrapper;
 
     public ScanFragment(AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+        super(appDatabase);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class ScanFragment extends BackstackFragment {
 
         this.context = context;
         SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        this.logEntryDAOWrapper = new LogPersistenceEnabledDaoWrapper(preferences, appDatabase.logEntryDAO());
+        this.logEntryDAOWrapper = new LogPersistenceEnabledDaoWrapper(preferences, database.logEntryDAO());
 
         if (context instanceof MainFragmentReplacer) {
             this.fragmentReplacer = (MainFragmentReplacer) context;

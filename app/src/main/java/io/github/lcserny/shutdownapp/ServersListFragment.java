@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient;
 
 import java.util.List;
 
-public class ServersListFragment extends BackstackFragment {
+public class ServersListFragment extends AbstractBackstackFragment {
 
     private static final String BACKSTACK_NAME = "serversListFragment";
 

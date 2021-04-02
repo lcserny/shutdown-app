@@ -16,17 +16,15 @@ import static io.github.lcserny.shutdownapp.EnableLOgPersistenceOnCheckedListene
 import static io.github.lcserny.shutdownapp.LocalNetworkScanner.DEFAULT_SOCKET_TIMEOUT;
 import static io.github.lcserny.shutdownapp.LocalNetworkScanner.SOCKET_TIMEOUT_KEY;
 
-public class ConfigFragment extends BackstackFragment {
+public class ConfigFragment extends AbstractDatabaseBacktrackFragment {
 
     private static final String BACKSTACK_NAME = "configFragment";
-
-    private final AppDatabase appDatabase;
 
     private Context context;
     private SharedPreferences preferences;
 
     public ConfigFragment(AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+        super(appDatabase);
     }
 
     @Override
@@ -59,7 +57,7 @@ public class ConfigFragment extends BackstackFragment {
         persistLogsCheckbox.setOnCheckedChangeListener(new EnableLOgPersistenceOnCheckedListener(preferences));
 
         Button clearLogsBtn = view.findViewById(R.id.deleteLogsBtn);
-        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(appDatabase.logEntryDAO()));
+        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(database.logEntryDAO()));
     }
 
     @Override

@@ -13,17 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class LogsFragment extends BackstackFragment {
+public class LogsFragment extends AbstractDatabaseBacktrackFragment {
 
     private static final int LOG_AMOUNT = 1500;
     private static final String BACKSTACK_NAME = "logsFragment";
 
-    private final AppDatabase appDatabase;
-
     private Context context;
 
     public LogsFragment(AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+        super(appDatabase);
     }
 
     @Override
@@ -40,7 +38,7 @@ public class LogsFragment extends BackstackFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
+        final LogEntryDAO logEntryDAO = database.logEntryDAO();
         List<LogDTO> latestLogs = LogEntryConverter.convertEntries(logEntryDAO.getLastN(LOG_AMOUNT));
 
         RecyclerView logsRecyclerVew = view.findViewById(R.id.logsRecyclerView);

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
     }
 
     @Override
-    public void replaceMainFragmentWith(BackstackFragment fragment) {
+    public void replaceMainFragmentWith(AbstractBackstackFragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainFragment, fragment);
         transaction.addToBackStack(fragment.getBackStackName());
