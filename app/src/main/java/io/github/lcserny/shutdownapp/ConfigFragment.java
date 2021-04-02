@@ -20,21 +20,20 @@ public class ConfigFragment extends BackstackFragment {
 
     private static final String BACKSTACK_NAME = "configFragment";
 
+    private final AppDatabase appDatabase;
+
     private Context context;
     private SharedPreferences preferences;
-    private LogEntryDAO logEntryDAO;
 
-    public ConfigFragment(LogEntryDAO logEntryDAO) {
-        this.logEntryDAO = logEntryDAO;
+    public ConfigFragment(AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainActivity) {
-            this.context = context;
-            this.preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        }
+        this.context = context;
+        this.preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -60,7 +59,7 @@ public class ConfigFragment extends BackstackFragment {
         persistLogsCheckbox.setOnCheckedChangeListener(new EnableLOgPersistenceOnCheckedListener(preferences));
 
         Button clearLogsBtn = view.findViewById(R.id.deleteLogsBtn);
-        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(logEntryDAO));
+        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(appDatabase.logEntryDAO()));
     }
 
     @Override

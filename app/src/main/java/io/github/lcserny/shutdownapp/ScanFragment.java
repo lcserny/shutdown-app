@@ -16,23 +16,26 @@ public class ScanFragment extends BackstackFragment {
 
     private static final String BACKSTACK_NAME = "scanFragment";
 
-    private MainFragmentReplacer fragmentReplacer;
-    private Context context;
-    private LogPersistenceEnabledDaoWrapper logEntryDAOWrapper;
-    private LogEntryDAO logEntryDAO;
+    private final AppDatabase appDatabase;
 
-    public ScanFragment(LogEntryDAO logEntryDAO) {
-        this.logEntryDAO = logEntryDAO;
+    private Context context;
+    private MainFragmentReplacer fragmentReplacer;
+    private LogPersistenceEnabledDaoWrapper logEntryDAOWrapper;
+
+    public ScanFragment(AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainActivity) {
+
+        this.context = context;
+        SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        this.logEntryDAOWrapper = new LogPersistenceEnabledDaoWrapper(preferences, appDatabase.logEntryDAO());
+
+        if (context instanceof MainFragmentReplacer) {
             this.fragmentReplacer = (MainFragmentReplacer) context;
-            this.context = context;
-            SharedPreferences preferences = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            this.logEntryDAOWrapper = new LogPersistenceEnabledDaoWrapper(preferences, logEntryDAO);
         }
     }
 
@@ -53,10 +56,6 @@ public class ScanFragment extends BackstackFragment {
         super.onViewCreated(view, savedInstanceState);
         EditText portView = view.findViewById(R.id.portView);
         Button scanButton = view.findViewById(R.id.scanView);
-
-        if (context == null) {
-            return;
-        }
 
         long start = System.currentTimeMillis();
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);

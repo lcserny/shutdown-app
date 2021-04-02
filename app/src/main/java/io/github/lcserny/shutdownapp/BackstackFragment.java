@@ -4,5 +4,5 @@ import androidx.fragment.app.Fragment;
 
 abstract class BackstackFragment extends Fragment {
 
-    public abstract String getBackStackName();
+    protected abstract String getBackStackName();
 }

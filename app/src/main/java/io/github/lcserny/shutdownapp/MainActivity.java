@@ -6,23 +6,15 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
-
-    public static final String SHUTDOWN_APP_DB = "shutdownApp-db";
-    private AppDatabase appDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, SHUTDOWN_APP_DB)
-                .allowMainThreadQueries()
-                .build();
-
         setContentView(R.layout.activity_main);
-        replaceMainFragmentWith(new ScanFragment(appDatabase.logEntryDAO()));
+        replaceMainFragmentWith(new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
     }
 
     @Override
@@ -33,16 +25,15 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
         int id = item.getItemId();
         if (id == R.id.mainMenuBack) {
-            replaceMainFragmentWith(new ScanFragment(logEntryDAO));
+            replaceMainFragmentWith(new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
             return true;
         } else if (id == R.id.mainMenuConfig) {
-            replaceMainFragmentWith(new ConfigFragment(logEntryDAO));
+            replaceMainFragmentWith(new ConfigFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
             return true;
         } else if (id == R.id.mainMenuLogs) {
-            replaceMainFragmentWith(new LogsFragment(logEntryDAO));
+            replaceMainFragmentWith(new LogsFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
             return true;
         }
 

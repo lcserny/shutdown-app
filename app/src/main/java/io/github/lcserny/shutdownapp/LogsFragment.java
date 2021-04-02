@@ -18,20 +18,18 @@ public class LogsFragment extends BackstackFragment {
     private static final int LOG_AMOUNT = 1500;
     private static final String BACKSTACK_NAME = "logsFragment";
 
+    private final AppDatabase appDatabase;
+
     private Context context;
 
-    private final List<LogDTO> latestLogs;
-
-    public LogsFragment(LogEntryDAO logEntryDAO) {
-        this.latestLogs = LogEntryConverter.convertEntries(logEntryDAO.getLastN(LOG_AMOUNT));
+    public LogsFragment(AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainActivity) {
-            this.context = context;
-        }
+        this.context = context;
     }
 
     @Nullable
@@ -42,6 +40,9 @@ public class LogsFragment extends BackstackFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        final LogEntryDAO logEntryDAO = appDatabase.logEntryDAO();
+        List<LogDTO> latestLogs = LogEntryConverter.convertEntries(logEntryDAO.getLastN(LOG_AMOUNT));
+
         RecyclerView logsRecyclerVew = view.findViewById(R.id.logsRecyclerView);
         logsRecyclerVew.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         logsRecyclerVew.setAdapter(new LogsAdapter(latestLogs));
