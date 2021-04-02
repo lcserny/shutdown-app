@@ -3,13 +3,11 @@ package io.github.lcserny.shutdownapp;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
+import io.github.lcserny.shutdownapp.NetworkScanningTask.ServerListFinisher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class ScanOnClickListener implements View.OnClickListener {
-
-    private static final String SHUTDOWN_PATH_PATTERN = "http://%s:%s/shutdown";
 
     private final Context context;
     private final MainFragmentReplacer fragmentReplacer;
@@ -28,17 +26,17 @@ class ScanOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        List<ShutdownServer> servers = new ArrayList<>();
-        // TODO: loading icon in UI?
-        for (String host : networkScanner.scanForIPsWithListenPort(portToScan)) {
-            servers.add(new ShutdownServer(host, String.format(SHUTDOWN_PATH_PATTERN, host, portToScan)));
-        }
-        if (!servers.isEmpty()) {
-            long start = System.currentTimeMillis();
-            fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(servers));
-            logEntryDAO.insert(LogEntryConverter.convertForTimeTook("switch to new ServersList fragment", start));
-        } else {
-            Toast.makeText(context, "No servers found", Toast.LENGTH_SHORT).show();
-        }
+        new NetworkScanningTask(networkScanner, portToScan, new ServerListFinisher() {
+            @Override
+            public void finish(List<ShutdownServer> serverList) {
+                if (!serverList.isEmpty()) {
+                    long start = System.currentTimeMillis();
+                    fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(serverList));
+                    logEntryDAO.insert(LogEntryConverter.convertForTimeTook("switch to new ServersList fragment", start));
+                } else {
+                    Toast.makeText(context, "No servers found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).execute();
     }
 }
