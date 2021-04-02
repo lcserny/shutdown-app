@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+// TODO: move database to AsyncTask?
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
 
     @Override
