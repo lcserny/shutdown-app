@@ -37,6 +37,7 @@ public class LogsFragment extends AbstractDatabaseBacktrackFragment {
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        // FIXME: recyclerView doesn't work like this in AsyncTask
         new LatestLogsTask(database.logEntryDAO(), new ResultCallback<List<LogDTO>>() {
             @Override
             public void run(List<LogDTO> latestLogs) {
