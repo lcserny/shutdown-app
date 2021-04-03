@@ -7,15 +7,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-// TODO: move database to AsyncTask?
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        replaceMainFragmentWith(new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.mainFragment, new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+            transaction.commit();
+        }
     }
 
     @Override
@@ -26,15 +29,16 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        AppDatabase database = AppDatabaseFactory.getAppDatabase(getApplicationContext());
         int id = item.getItemId();
         if (id == R.id.mainMenuBack) {
-            replaceMainFragmentWith(new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+            replaceMainFragmentWith(new ScanFragment(database));
             return true;
         } else if (id == R.id.mainMenuConfig) {
-            replaceMainFragmentWith(new ConfigFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+            replaceMainFragmentWith(new ConfigFragment(database));
             return true;
         } else if (id == R.id.mainMenuLogs) {
-            replaceMainFragmentWith(new LogsFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+            replaceMainFragmentWith(new LogsFragment(database));
             return true;
         }
 
