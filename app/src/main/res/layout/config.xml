@@ -12,20 +12,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@+id/saveTopGuideView"
             android:padding="8dp"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/socketTimeoutView"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:paddingLeft="16dp" android:paddingRight="16dp" android:width="100dp"
-            app:layout_constraintTop_toBottomOf="@+id/socketTimeoutLabelView"/>
     <Button
             android:text="@string/save_config_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/saveView" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/socketTimeoutView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/socketTimeoutSpinner"
             android:width="200dp" android:height="50dp"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/saveTopGuideView"
@@ -44,4 +36,9 @@
             android:text="@string/enable_log_saving_label"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/deleteLogsBtn"/>
+    <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" android:id="@+id/socketTimeoutSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/socketTimeoutLabelView"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
