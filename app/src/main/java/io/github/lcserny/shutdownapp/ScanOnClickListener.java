@@ -3,7 +3,6 @@ package io.github.lcserny.shutdownapp;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
-import io.github.lcserny.shutdownapp.NetworkScanningTask.ServerListFinisher;
 
 import java.util.List;
 
@@ -26,12 +25,12 @@ class ScanOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        new NetworkScanningTask(networkScanner, portToScan, new ServerListFinisher() {
+        new NetworkScanningTask(networkScanner, portToScan, new ResultCallback<List<ShutdownServer>>() {
             @Override
-            public void finish(List<ShutdownServer> serverList) {
-                if (!serverList.isEmpty()) {
+            public void run(List<ShutdownServer> result) {
+                if (!result.isEmpty()) {
                     long start = System.currentTimeMillis();
-                    fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(serverList));
+                    fragmentReplacer.replaceMainFragmentWith(new ServersListFragment(result));
                     logEntryDAO.insert(LogEntryConverter.convertForTimeTook("switch to new ServersList fragment", start));
                 } else {
                     Toast.makeText(context, "No servers found", Toast.LENGTH_SHORT).show();

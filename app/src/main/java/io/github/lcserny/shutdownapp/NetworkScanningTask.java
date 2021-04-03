@@ -11,12 +11,12 @@ class NetworkScanningTask extends AsyncTask<Void, Void, List<ShutdownServer>> {
 
     private final NetworkScanner networkScanner;
     private final int portToScan;
-    private final ServerListFinisher finisher;
+    private final ResultCallback<List<ShutdownServer>> resultCallback;
 
-    NetworkScanningTask(NetworkScanner networkScanner, int portToScan, ServerListFinisher finisher) {
+    NetworkScanningTask(NetworkScanner networkScanner, int portToScan, ResultCallback<List<ShutdownServer>> resultCallback) {
         this.networkScanner = networkScanner;
         this.portToScan = portToScan;
-        this.finisher = finisher;
+        this.resultCallback = resultCallback;
     }
 
     @Override
@@ -31,10 +31,6 @@ class NetworkScanningTask extends AsyncTask<Void, Void, List<ShutdownServer>> {
 
     @Override
     protected void onPostExecute(List<ShutdownServer> serverList) {
-        finisher.finish(serverList);
-    }
-
-    interface ServerListFinisher {
-        void finish(List<ShutdownServer> serverList);
+        resultCallback.run(serverList);
     }
 }
