@@ -62,7 +62,7 @@ class LocalNetworkScanner implements NetworkScanner {
         executor.execute(runnableList, new ExecutionTimeout(10, TimeUnit.SECONDS));
         logEntries.add(LogEntryConverter.convertForTimeTook("execute network scanning pings", start));
 
-        logEntryDAO.insert(logEntries);
+        logEntryDAO.insert(logEntries.toArray(new LogEntry[0]));
 
         return foundHosts;
     }

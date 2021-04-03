@@ -15,7 +15,6 @@ import java.util.List;
 
 public class LogsFragment extends AbstractDatabaseBacktrackFragment {
 
-    private static final int LOG_AMOUNT = 1500;
     private static final String BACKSTACK_NAME = "logsFragment";
 
     private Context context;
@@ -37,14 +36,16 @@ public class LogsFragment extends AbstractDatabaseBacktrackFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        final LogEntryDAO logEntryDAO = database.logEntryDAO();
-        List<LogDTO> latestLogs = LogEntryConverter.convertEntries(logEntryDAO.getLastN(LOG_AMOUNT));
-
-        RecyclerView logsRecyclerVew = view.findViewById(R.id.logsRecyclerView);
-        logsRecyclerVew.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-        logsRecyclerVew.setAdapter(new LogsAdapter(latestLogs));
-        logsRecyclerVew.setLayoutManager(new LinearLayoutManager(context));
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        new LatestLogsTask(database.logEntryDAO(), new ResultCallback<List<LogDTO>>() {
+            @Override
+            public void run(List<LogDTO> latestLogs) {
+                RecyclerView logsRecyclerVew = view.findViewById(R.id.logsRecyclerView);
+                logsRecyclerVew.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+                logsRecyclerVew.setAdapter(new LogsAdapter(latestLogs));
+                logsRecyclerVew.setLayoutManager(new LinearLayoutManager(context));
+            }
+        });
     }
 
     @Override
