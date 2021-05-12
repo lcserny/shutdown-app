@@ -64,7 +64,7 @@ public class ScanFragment extends AbstractDatabaseBacktrackFragment {
         logEntryDAOWrapper.insert(LogEntryConverter.convertForTimeTook("get SharedPreferences in ScanFragment", start));
 
         scanButton.setOnClickListener(new ScanOnClickListener(context, fragmentReplacer,
-                new CachedLocalNetworkScanner(wifiManager, preferences, logEntryDAOWrapper), portView.getText().toString(), logEntryDAOWrapper));
+                new UdpNetworkScanner(wifiManager, preferences), portView.getText().toString(), logEntryDAOWrapper));
     }
 
     @Override

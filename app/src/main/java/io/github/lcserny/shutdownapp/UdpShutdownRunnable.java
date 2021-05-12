@@ -8,14 +8,15 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 
-class ShutdownRunnable implements Runnable {
+// TODO
+class UdpShutdownRunnable implements Runnable {
 
     private final OkHttpClient httpClient;
     private final Request request;
 
     private String response = "N/A";
 
-    ShutdownRunnable(OkHttpClient httpClient, Request request) {
+    UdpShutdownRunnable(OkHttpClient httpClient, Request request) {
         this.httpClient = httpClient;
         this.request = request;
     }
@@ -32,7 +33,7 @@ class ShutdownRunnable implements Runnable {
                 }
             }
         } catch (IOException e) {
-            Log.e(ShutdownRunnable.class.getSimpleName(), e.getMessage());
+            Log.e(UdpShutdownRunnable.class.getSimpleName(), e.getMessage());
             response = e.getMessage();
         }
     }

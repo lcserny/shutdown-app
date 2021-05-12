@@ -21,8 +21,8 @@ class HttpShutdownPerformer implements ShutdownPerformer {
             seconds = "0";
         }
         Request request = new Request.Builder().url(server.getShutdownUrl() + "?seconds=" + seconds).build();
-        ShutdownRunnable shutdownRunnable = new ShutdownRunnable(httpClient, request);
-        executor.execute(Collections.singletonList(shutdownRunnable), new ExecutionTimeout(10, TimeUnit.SECONDS));
-        return shutdownRunnable.getResponse();
+        HttpShutdownRunnable httpShutdownRunnable = new HttpShutdownRunnable(httpClient, request);
+        executor.execute(Collections.singletonList(httpShutdownRunnable), new ExecutionTimeout(10, TimeUnit.SECONDS));
+        return httpShutdownRunnable.getResponse();
     }
 }
