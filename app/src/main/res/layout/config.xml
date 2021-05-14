@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools" android:id="@+id/configFragment"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/configFragment"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <TextView
             android:text="@string/socket_timeout_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/socketTimeoutLabelView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@+id/saveTopGuideView"
-            android:padding="8dp"/>
-    <Button
-            android:text="@string/save_config_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/saveView" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/socketTimeoutSpinner"
-            android:width="200dp" android:height="50dp"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/saveTopGuideView"
-                                                app:layout_constraintGuide_begin="75dp"
-                                                android:orientation="horizontal"/>
-    <Button
-            android:text="@string/delete_logs_btn_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/deleteLogsBtn"
-            app:layout_constraintTop_toBottomOf="@+id/saveView" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="50dp" android:width="200dp"
-            android:height="50dp"/>
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/enableLogSavingCheck"
-            android:text="@string/enable_log_saving_label"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/deleteLogsBtn"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"/>
+
     <Spinner
             android:layout_width="150dp"
             android:layout_height="wrap_content" android:id="@+id/socketTimeoutSpinner"
-            app:layout_constraintTop_toBottomOf="@+id/socketTimeoutLabelView"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:text="@string/proxy_port_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:id="@+id/proxyPorLabelView"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/proxyPorView"
+            android:gravity="center"
+            android:width="100dp"
+            android:layout_gravity="center"
+            tools:text="41234"
+            android:layout_marginTop="8dp"/>
+
+    <Button
+            android:text="@string/save_config_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/saveView"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:width="200dp" android:height="50dp"/>
+
+</LinearLayout>

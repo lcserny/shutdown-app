@@ -5,25 +5,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.OkHttpClient;
 
 import java.util.List;
 
-public class ServersListFragment extends AbstractBackstackFragment {
+public class CommandsListFragment extends AbstractBackstackFragment {
 
-    private static final String BACKSTACK_NAME = "serversListFragment";
+    private static final String BACKSTACK_NAME = "commandsListFragment";
 
-    private final List<ShutdownServer> serverList;
+    private final List<Command> commandsList;
 
     private MainActivity mainActivity;
+    private MainFragmentReplacer fragmentReplacer;
 
-    public ServersListFragment(List<ShutdownServer> serverList) {
-        this.serverList = serverList;
+    public CommandsListFragment(List<Command> commandsList) {
+        this.commandsList = commandsList;
     }
 
     @Override
@@ -32,19 +31,21 @@ public class ServersListFragment extends AbstractBackstackFragment {
         if (context instanceof MainActivity) {
             this.mainActivity = (MainActivity) context;
         }
+        if (context instanceof MainFragmentReplacer) {
+            this.fragmentReplacer = (MainFragmentReplacer) context;
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.servers_list, container, false);
+        return inflater.inflate(R.layout.commands_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        RecyclerView recyclerView = view.findViewById(R.id.serversRecyclerView);
-        EditText shutdownSecondsView = view.findViewById(R.id.shutdownSecondsView);
-        recyclerView.setAdapter(new ShutdownServerAdapter(serverList, new UdpShutdownPerformer(), shutdownSecondsView));
+        RecyclerView recyclerView = view.findViewById(R.id.commandsRecyclerView);
+        recyclerView.setAdapter(new CommandsAdapter(commandsList, fragmentReplacer));
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
     }
 

@@ -10,20 +10,14 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static io.github.lcserny.shutdownapp.EnableLOgPersistenceOnCheckedListener.LOG_PERSISTENCE_KEY;
-import static io.github.lcserny.shutdownapp.LocalNetworkScanner.DEFAULT_SOCKET_TIMEOUT;
-import static io.github.lcserny.shutdownapp.LocalNetworkScanner.SOCKET_TIMEOUT_KEY;
+import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.*;
 
-public class ConfigFragment extends AbstractDatabaseBacktrackFragment {
+public class ConfigFragment extends AbstractBackstackFragment {
 
     private static final String BACKSTACK_NAME = "configFragment";
 
     private Context context;
     private SharedPreferences preferences;
-
-    public ConfigFragment(AppDatabase appDatabase) {
-        super(appDatabase);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,16 +44,12 @@ public class ConfigFragment extends AbstractDatabaseBacktrackFragment {
         socketTimeoutSpinner.setAdapter(socketTimeoutAdapter);
         socketTimeoutSpinner.setSelection(socketTimeoutAdapter.getPosition(Integer.toString(socketTimeout)));
 
+        int proxyPort = preferences.getInt(PROXY_PORT_KEY, DEFAULT_PROXY_PORT);
+        EditText proxyPortView = view.findViewById(R.id.proxyPorView);
+        proxyPortView.setText(String.valueOf(proxyPort));
+
         Button saveBtn = view.findViewById(R.id.saveView);
-        saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context, socketTimeoutSpinner));
-
-        boolean logPersistanceEnabled = preferences.getBoolean(LOG_PERSISTENCE_KEY, false);
-        CheckBox persistLogsCheckbox = view.findViewById(R.id.enableLogSavingCheck);
-        persistLogsCheckbox.setChecked(logPersistanceEnabled);
-        persistLogsCheckbox.setOnCheckedChangeListener(new EnableLOgPersistenceOnCheckedListener(preferences));
-
-        Button clearLogsBtn = view.findViewById(R.id.deleteLogsBtn);
-        clearLogsBtn.setOnClickListener(new ClearLogsOnClickListener(database.logEntryDAO()));
+        saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context, socketTimeoutSpinner, proxyPortView));
     }
 
     @Override

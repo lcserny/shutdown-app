@@ -3,14 +3,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/mainMenuBack"
-          android:title="@string/scan_button_label"
+          android:title="@string/commands_list_label"
           app:showAsAction="always"/>
 
     <item android:id="@+id/mainMenuConfig"
           android:title="@string/config_label"
-          app:showAsAction="always"/>
-
-    <item android:id="@+id/mainMenuLogs"
-          android:title="@string/logs_label"
           app:showAsAction="always"/>
 </menu>

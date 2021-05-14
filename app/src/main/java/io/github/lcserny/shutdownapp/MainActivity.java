@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.mainFragment, new ScanFragment(AppDatabaseFactory.getAppDatabase(getApplicationContext())));
+            transaction.replace(R.id.mainFragment, new CommandsListFragment(CommandsProvider.provide(this)));
             transaction.commit();
         }
     }
@@ -29,16 +29,12 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        AppDatabase database = AppDatabaseFactory.getAppDatabase(getApplicationContext());
         int id = item.getItemId();
         if (id == R.id.mainMenuBack) {
-            replaceMainFragmentWith(new ScanFragment(database));
+            replaceMainFragmentWith(new CommandsListFragment(CommandsProvider.provide(this)));
             return true;
         } else if (id == R.id.mainMenuConfig) {
-            replaceMainFragmentWith(new ConfigFragment(database));
-            return true;
-        } else if (id == R.id.mainMenuLogs) {
-            replaceMainFragmentWith(new LogsFragment(database));
+            replaceMainFragmentWith(new ConfigFragment());
             return true;
         }
 

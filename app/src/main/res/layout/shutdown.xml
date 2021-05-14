@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/shutdownFragment"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+            android:text="@string/shutdown_delay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/shutdownDelayView" android:layout_marginTop="32dp"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/shutdownSecondsView"
+            android:gravity="center"
+            android:width="100dp"
+            android:layout_gravity="center"
+            android:text="0" android:layout_marginTop="8dp"/>
+    <Button
+            android:text="@string/shutdown_button_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:width="200dp"
+            android:id="@+id/executeShutdownButton" android:layout_marginTop="8dp"/>
+</LinearLayout>

@@ -1,17 +1,18 @@
 <resources>
-    <string name="app_name">ShutdownApp</string>
-    <string name="proxy_port">41234</string>
-    <string name="scan_button_label">Scan</string>
-    <string name="save_config_label">Save</string>
+    <string name="app_name">LegionControl</string>
+
+    <string name="commands_list_label">Commands</string>
+
     <string name="shutdown_delay">Shutdown delay</string>
     <string name="shutdown_button_label">Shutdown</string>
-    <string name="preference_file_key">io.github.lcserny.shutdownapp.PREFERENCE_FILE_KEY</string>
-    <string name="config_label">Config</string>
-    <string name="logs_label">Logs</string>
-    <string name="delete_logs_btn_label">Delete Log Entries</string>
-    <string name="socket_timeout_label">Socket Timeout (ms)</string>
-    <string name="enable_log_saving_label">Persist Logs in Database</string>
 
+    <string name="preference_file_key">io.github.lcserny.shutdownapp.PREFERENCE_FILE_KEY</string>
+
+    <string name="config_label">Config</string>
+    <string name="save_config_label">Save</string>
+    <string name="proxy_port_label">UDP Proxy Port</string>
+
+    <string name="socket_timeout_label">Socket Timeout (ms)</string>
     <string-array name="socket_timeout_values">
         <item>500</item>
         <item>1000</item>
