@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.*;
 
+// TODO: refactor: this, UdpSocketCallable and UdpClient
 public class UdpShutdownPerformer implements ShutdownPerformer {
 
     public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
@@ -35,7 +36,7 @@ public class UdpShutdownPerformer implements ShutdownPerformer {
         if (!TextUtils.isDigitsOnly(seconds) || seconds.contains("-")) {
             seconds = "0";
         }
-        String payload = seconds; // TODO
+        String payload = "shutdown/seconds=" + seconds;
 
         UdpSocketCallable runnable = new UdpSocketCallable(new UdpClient(getSubnetAddress(), proxyPort), payload);
         Future<String> futureResult = executor.submit(runnable);
