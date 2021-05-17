@@ -10,7 +10,7 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.*;
+import static io.github.lcserny.shutdownapp.UdpSocketExecutor.*;
 
 public class ConfigFragment extends AbstractBackstackFragment {
 

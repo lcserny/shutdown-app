@@ -5,10 +5,12 @@ import android.util.Log;
 
 import java.util.concurrent.*;
 
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.DEFAULT_SOCKET_TIMEOUT;
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.SOCKET_TIMEOUT_KEY;
-
 class UdpSocketExecutor {
+
+    public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
+    public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
+    public static final String PROXY_PORT_KEY = "PROXY_PORT";
+    public static final int DEFAULT_PROXY_PORT = 41234;
 
     private final UdpClient client;
     private final SharedPreferences preferences;

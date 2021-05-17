@@ -4,11 +4,6 @@ import android.text.TextUtils;
 
 public class UdpShutdownPerformer implements ShutdownPerformer {
 
-    public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
-    public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
-    public static final String PROXY_PORT_KEY = "PROXY_PORT";
-    public static final int DEFAULT_PROXY_PORT = 41234;
-
     private final UdpSocketExecutor executor;
 
     public UdpShutdownPerformer(UdpSocketExecutor executor) {

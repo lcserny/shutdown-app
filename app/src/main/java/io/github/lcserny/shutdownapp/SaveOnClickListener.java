@@ -7,8 +7,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.PROXY_PORT_KEY;
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.SOCKET_TIMEOUT_KEY;
+import static io.github.lcserny.shutdownapp.UdpSocketExecutor.PROXY_PORT_KEY;
+import static io.github.lcserny.shutdownapp.UdpSocketExecutor.SOCKET_TIMEOUT_KEY;
 
 class SaveOnClickListener implements View.OnClickListener {
 

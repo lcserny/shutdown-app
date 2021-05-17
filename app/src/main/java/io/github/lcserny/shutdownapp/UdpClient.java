@@ -12,7 +12,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.*;
+import static io.github.lcserny.shutdownapp.UdpSocketExecutor.*;
 
 class UdpClient {
 
