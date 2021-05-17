@@ -10,6 +10,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.concurrent.Callable;
+
 public class ShutdownFragment extends AbstractBackstackFragment {
 
     private static final String BACKSTACK_NAME = "shutdownFragment";
@@ -37,9 +39,9 @@ public class ShutdownFragment extends AbstractBackstackFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         final EditText shutdownSecondsView = view.findViewById(R.id.shutdownSecondsView);
         Button executeShutdownButton = view.findViewById(R.id.executeShutdownButton);
-        executeShutdownButton.setOnClickListener(new ToastResponseClickListener(context, new ResponseCallable<String>() {
+        executeShutdownButton.setOnClickListener(new ToastResponseClickListener(context, new Callable<String>() {
             @Override
-            public String run() {
+            public String call() throws Exception {
                 return shutdownPerformer.shutdown(shutdownSecondsView.getText().toString());
             }
         }));
