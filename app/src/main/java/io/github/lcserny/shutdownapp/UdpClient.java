@@ -7,7 +7,7 @@ import java.net.*;
 
 class UdpClient {
 
-    private static final String SOCKET_ERROR = "UDP SocketException execption occurred";
+    private static final String SOCKET_ERROR = "UDP SocketException exception occurred";
     private final String subnetAddress;
     private final int port;
 

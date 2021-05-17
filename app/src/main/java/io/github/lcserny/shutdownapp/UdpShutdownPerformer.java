@@ -42,7 +42,7 @@ public class UdpShutdownPerformer implements ShutdownPerformer {
         Future<String> futureResult = executor.submit(runnable);
         try {
             String result = futureResult.get(socketTimeout, TimeUnit.MILLISECONDS);
-            if ("".equals(result.trim())) {
+            if ("OK".equals(result.trim())) {
                 return "Shutting down server";
             }
             return result;
