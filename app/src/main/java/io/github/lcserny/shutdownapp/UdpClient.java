@@ -1,19 +1,29 @@
 package io.github.lcserny.shutdownapp;
 
+import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import static io.github.lcserny.shutdownapp.UdpShutdownPerformer.*;
 
 class UdpClient {
 
     private static final String SOCKET_ERROR = "UDP SocketException exception occurred";
-    private final String subnetAddress;
-    private final int port;
 
-    public UdpClient(String subnetAddress, int port) {
-        this.subnetAddress = subnetAddress;
-        this.port = port;
+    private final WifiManager wifiManager;
+    private final SharedPreferences preferences;
+
+    public UdpClient(WifiManager wifiManager, SharedPreferences preferences) {
+        this.wifiManager = wifiManager;
+        this.preferences = preferences;
     }
 
     String execute(String payload) {
@@ -27,14 +37,15 @@ class UdpClient {
         byte[] packetData = payload.getBytes();
         InetAddress broadcastAddress;
         try {
-            broadcastAddress = InetAddress.getByName(subnetAddress);
+            broadcastAddress = InetAddress.getByName(getSubnetAddress());
         } catch (UnknownHostException e) {
             Log.e(UdpClient.class.getSimpleName(), SOCKET_ERROR, e);
             return SOCKET_ERROR;
         }
 
+        int proxyPort = preferences.getInt(PROXY_PORT_KEY, DEFAULT_PROXY_PORT);
         String result;
-        DatagramPacket packet = new DatagramPacket(packetData, packetData.length, broadcastAddress, port);
+        DatagramPacket packet = new DatagramPacket(packetData, packetData.length, broadcastAddress, proxyPort);
         try {
             socket.send(packet);
             socket.receive(receivePacket);
@@ -48,13 +59,23 @@ class UdpClient {
     }
 
     private DatagramSocket createSocket() {
+        int socketTimeout = preferences.getInt(SOCKET_TIMEOUT_KEY, DEFAULT_SOCKET_TIMEOUT);
         DatagramSocket socket = null;
         try {
             socket = new DatagramSocket();
             socket.setBroadcast(true);
-        } catch (SocketException e) {
+            socket.setSoTimeout(socketTimeout);
+        } catch (Exception e) {
             Log.e(UdpClient.class.getSimpleName(), SOCKET_ERROR, e);
         }
         return socket;
+    }
+
+    private String getSubnetAddress() {
+        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+        int ipAddress = connectionInfo.getIpAddress();
+        String ipString = Formatter.formatIpAddress(ipAddress);
+        String prefix = ipString.substring(0, ipString.lastIndexOf(".") + 1);
+        return prefix + "255";
     }
 }

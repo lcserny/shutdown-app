@@ -13,9 +13,15 @@ class CommandsProvider {
     }
 
     static List<Command> provide(Context context) {
+        return Collections.singletonList(provideShutdownFragment(context));
+    }
+
+    private static Command provideShutdownFragment(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        Command shutdownCommand = new Command(R.string.shutdown_button_label, new ShutdownFragment(new UdpShutdownPerformer(preferences, wifiManager)));
-        return Collections.singletonList(shutdownCommand);
+        UdpClient client = new UdpClient(wifiManager, preferences);
+        UdpSocketExecutor executor = new UdpSocketExecutor(client, preferences);
+        UdpShutdownPerformer performer = new UdpShutdownPerformer(executor);
+        return new Command(R.string.shutdown_button_label, new ShutdownFragment(performer));
     }
 }
