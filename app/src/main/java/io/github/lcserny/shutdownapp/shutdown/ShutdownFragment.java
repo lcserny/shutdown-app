@@ -1,4 +1,4 @@
-package io.github.lcserny.shutdownapp;
+package io.github.lcserny.shutdownapp.shutdown;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import io.github.lcserny.shutdownapp.AbstractBackstackFragment;
+import io.github.lcserny.shutdownapp.R;
+import io.github.lcserny.shutdownapp.ToastResponseClickListener;
 
 import java.util.concurrent.Callable;
 

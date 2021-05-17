@@ -2,10 +2,11 @@ package io.github.lcserny.shutdownapp;
 
 import android.content.SharedPreferences;
 import android.util.Log;
+import io.github.lcserny.shutdownapp.shutdown.UdpShutdownPerformer;
 
 import java.util.concurrent.*;
 
-class UdpSocketExecutor {
+public class UdpSocketExecutor {
 
     public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
     public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
@@ -15,12 +16,12 @@ class UdpSocketExecutor {
     private final UdpClient client;
     private final SharedPreferences preferences;
 
-    UdpSocketExecutor(UdpClient client, SharedPreferences preferences) {
+    public UdpSocketExecutor(UdpClient client, SharedPreferences preferences) {
         this.client = client;
         this.preferences = preferences;
     }
 
-    String execute(final String payload) {
+    public String execute(final String payload) {
         int socketTimeout = preferences.getInt(SOCKET_TIMEOUT_KEY, DEFAULT_SOCKET_TIMEOUT);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<String> future = executor.submit(new Callable<String>() {

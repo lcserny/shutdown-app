@@ -1,6 +1,7 @@
-package io.github.lcserny.shutdownapp;
+package io.github.lcserny.shutdownapp.shutdown;
 
 import android.text.TextUtils;
+import io.github.lcserny.shutdownapp.UdpSocketExecutor;
 
 public class UdpShutdownPerformer implements ShutdownPerformer {
 

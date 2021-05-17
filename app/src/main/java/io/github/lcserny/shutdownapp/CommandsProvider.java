@@ -3,6 +3,8 @@ package io.github.lcserny.shutdownapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import io.github.lcserny.shutdownapp.shutdown.ShutdownFragment;
+import io.github.lcserny.shutdownapp.shutdown.UdpShutdownPerformer;
 
 import java.util.Collections;
 import java.util.List;

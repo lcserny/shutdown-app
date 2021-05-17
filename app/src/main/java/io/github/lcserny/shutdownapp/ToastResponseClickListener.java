@@ -7,12 +7,12 @@ import android.widget.Toast;
 
 import java.util.concurrent.Callable;
 
-class ToastResponseClickListener implements View.OnClickListener {
+public class ToastResponseClickListener implements View.OnClickListener {
 
     private final Context context;
     private final Callable<String> callable;
 
-    ToastResponseClickListener(Context context, Callable<String> callable) {
+    public ToastResponseClickListener(Context context, Callable<String> callable) {
         this.context = context;
         this.callable = callable;
     }
