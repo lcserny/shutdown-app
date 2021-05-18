@@ -1,6 +1,5 @@
 package io.github.lcserny.shutdownapp;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import io.github.lcserny.shutdownapp.shutdown.ShutdownFragment;
@@ -14,13 +13,11 @@ class CommandsProvider {
     private CommandsProvider() {
     }
 
-    static List<Command> provide(Context context) {
-        return Collections.singletonList(provideShutdownFragment(context));
+    static List<Command> provide(WifiManager wifiManager, SharedPreferences preferences) {
+        return Collections.singletonList(provideShutdownFragment(wifiManager, preferences));
     }
 
-    private static Command provideShutdownFragment(Context context) {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    private static Command provideShutdownFragment(WifiManager wifiManager, SharedPreferences preferences) {
         UdpClient client = new UdpClient(wifiManager, preferences);
         UdpSocketExecutor executor = new UdpSocketExecutor(client, preferences);
         UdpShutdownPerformer performer = new UdpShutdownPerformer(executor);
