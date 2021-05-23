@@ -10,24 +10,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements MainFragmentReplacer {
 
-    private WifiManager wifiManager;
-    private SharedPreferences preferences;
+    private final Map<Integer, AbstractBackstackFragment> activityFragments = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initFragmentsMap();
+        replaceMainFragmentInternal(activityFragments.get(R.id.mainMenuBack), false);
+    }
 
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        preferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    private void initFragmentsMap() {
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.mainFragment, new CommandsListFragment(CommandsProvider.provide(wifiManager, preferences)));
-            transaction.commit();
-        }
+        activityFragments.put(R.id.mainMenuBack, new CommandsListFragment(CommandsProvider.provide(wifiManager, preferences)));
+        activityFragments.put(R.id.mainMenuConfig, new ConfigFragment());
     }
 
     @Override
@@ -39,22 +42,26 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.mainMenuBack) {
-            replaceMainFragmentWith(new CommandsListFragment(CommandsProvider.provide(wifiManager, preferences)));
-            return true;
-        } else if (id == R.id.mainMenuConfig) {
-            replaceMainFragmentWith(new ConfigFragment());
-            return true;
+        for (Map.Entry<Integer, AbstractBackstackFragment> fragmentEntry : activityFragments.entrySet()) {
+            if (fragmentEntry.getKey().equals(id)) {
+                replaceMainFragmentWith(fragmentEntry.getValue());
+                return true;
+            }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void replaceMainFragmentWith(AbstractBackstackFragment fragment) {
+        replaceMainFragmentInternal(fragment, true);
+    }
+
+    private void replaceMainFragmentInternal(AbstractBackstackFragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainFragment, fragment);
-        transaction.addToBackStack(fragment.getBackStackName());
+        if (addToBackStack) {
+            transaction.addToBackStack(fragment.getBackStackName());
+        }
         transaction.commit();
     }
 }
