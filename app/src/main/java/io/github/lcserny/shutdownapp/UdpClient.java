@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import io.github.lcserny.shutdownapp.ResultPair.ResultPairBuilder;
 
@@ -28,50 +29,39 @@ class UdpClient {
     }
 
     String execute(String payload) {
-        byte[] packetData = payload.getBytes();
-        InetAddress broadcastAddress;
+        DatagramSocket socket = null;
         try {
-            broadcastAddress = InetAddress.getByName(getSubnetAddress());
-        } catch (UnknownHostException e) {
-            Log.e(UdpClient.class.getSimpleName(), SOCKET_ERROR, e);
-            return e.getMessage();
-        }
+            InetAddress broadcastAddress = InetAddress.getByName(getSubnetAddress());
 
-        byte[] receiveBuffer = new byte[1024];
-        DatagramPacket receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-        ResultPair<DatagramSocket> datagramSocketResultPair = createSocket();
-        if (!datagramSocketResultPair.isSuccess()) {
-            return datagramSocketResultPair.getError();
-        }
-        DatagramSocket socket = datagramSocketResultPair.getResult();
+            int proxyPort = preferences.getInt(PROXY_PORT_KEY, DEFAULT_PROXY_PORT);
 
-        int proxyPort = preferences.getInt(PROXY_PORT_KEY, DEFAULT_PROXY_PORT);
-        String result;
-        DatagramPacket packet = new DatagramPacket(packetData, packetData.length, broadcastAddress, proxyPort);
-        try {
-            socket.send(packet);
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+
+            byte[] sendData = payload.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcastAddress, proxyPort);
+
+            socket = createSocket();
+            socket.send(sendPacket);
             socket.receive(receivePacket);
-            result = new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
-        } catch (IOException e) {
-            Log.e(UdpClient.class.getSimpleName(), SOCKET_ERROR, e);
-            result = e.getMessage();
-        }
-        socket.close();
-        return result;
-    }
 
-    private ResultPair<DatagramSocket> createSocket() {
-        int socketTimeout = preferences.getInt(SOCKET_TIMEOUT_KEY, DEFAULT_SOCKET_TIMEOUT);
-        DatagramSocket socket;
-        try {
-            socket = new DatagramSocket();
-            socket.setBroadcast(true);
-            socket.setSoTimeout(socketTimeout);
+            return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
         } catch (Exception e) {
             Log.e(UdpClient.class.getSimpleName(), SOCKET_ERROR, e);
-            return ResultPairBuilder.failure(e.getMessage());
+            return e.getMessage();
+        } finally {
+            if (socket != null) {
+                socket.close();
+            }
         }
-        return ResultPairBuilder.success(socket);
+    }
+
+    private DatagramSocket createSocket() throws IOException {
+        int socketTimeout = preferences.getInt(SOCKET_TIMEOUT_KEY, DEFAULT_SOCKET_TIMEOUT);
+        DatagramSocket socket = new DatagramSocket();
+        socket.setBroadcast(true);
+        socket.setSoTimeout(socketTimeout);
+        return socket;
     }
 
     private String getSubnetAddress() {
