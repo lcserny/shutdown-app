@@ -33,7 +33,7 @@ public class UdpSocketExecutor {
         try {
             return future.get(socketTimeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            Log.e(UdpShutdownPerformer.class.getSimpleName(), "Error occurred executing udp socket command", e);
+            Log.e(UdpShutdownPerformer.class.getSimpleName(), e.getMessage(), e);
             return e.getMessage();
         }
     }
