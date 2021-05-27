@@ -23,7 +23,7 @@ class UdpClient {
         this.preferences = preferences;
     }
 
-    String execute(String payload) {
+    String send(String payload) {
         try (DatagramSocket socket = createSocket()) {
             byte[] sendData = payload.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,

@@ -27,7 +27,7 @@ public class UdpSocketExecutor {
         Future<String> future = executor.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                return client.execute(payload);
+                return client.send(payload);
             }
         });
         try {
