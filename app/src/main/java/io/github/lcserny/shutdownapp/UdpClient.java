@@ -11,9 +11,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import static io.github.lcserny.shutdownapp.UdpSocketExecutor.*;
+import static io.github.lcserny.shutdownapp.UdpFindIPExecutor.*;
 
 class UdpClient {
+
+    private static final String DEVICE_ORIGIN = "ANDROID";
 
     private final WifiManager wifiManager;
     private final SharedPreferences preferences;
@@ -23,9 +25,9 @@ class UdpClient {
         this.preferences = preferences;
     }
 
-    String send(String payload) {
+    ResultPair<InetAddress> findIp() {
         try (DatagramSocket socket = createSocket()) {
-            byte[] sendData = payload.getBytes();
+            byte[] sendData = DEVICE_ORIGIN.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
                     InetAddress.getByName(getSubnetAddress()), preferences.getInt(PROXY_PORT_KEY, DEFAULT_PROXY_PORT));
             socket.send(sendPacket);
@@ -34,10 +36,10 @@ class UdpClient {
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             socket.receive(receivePacket);
 
-            return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
+            return ResultPair.ResultPairBuilder.success(receivePacket.getAddress());
         } catch (Exception e) {
             Log.e(UdpClient.class.getSimpleName(), e.getMessage(), e);
-            return e.getMessage();
+            return ResultPair.ResultPairBuilder.failure(e.getMessage());
         }
     }
 

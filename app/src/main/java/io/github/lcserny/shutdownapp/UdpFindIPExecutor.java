@@ -1,12 +1,11 @@
 package io.github.lcserny.shutdownapp;
 
 import android.content.SharedPreferences;
-import android.util.Log;
-import io.github.lcserny.shutdownapp.shutdown.UdpShutdownPerformer;
 
+import java.net.InetAddress;
 import java.util.concurrent.*;
 
-public class UdpSocketExecutor {
+public class UdpFindIPExecutor {
 
     public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
     public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
@@ -16,25 +15,24 @@ public class UdpSocketExecutor {
     private final UdpClient client;
     private final SharedPreferences preferences;
 
-    public UdpSocketExecutor(UdpClient client, SharedPreferences preferences) {
+    public UdpFindIPExecutor(UdpClient client, SharedPreferences preferences) {
         this.client = client;
         this.preferences = preferences;
     }
 
-    public String execute(final String payload) {
+    public InetAddress execute() throws Exception {
         int socketTimeout = preferences.getInt(SOCKET_TIMEOUT_KEY, DEFAULT_SOCKET_TIMEOUT);
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<String> future = executor.submit(new Callable<String>() {
+        Future<ResultPair<InetAddress>> future = executor.submit(new Callable<ResultPair<InetAddress>>() {
             @Override
-            public String call() throws Exception {
-                return client.send(payload);
+            public ResultPair<InetAddress> call() {
+                return client.findIp();
             }
         });
-        try {
-            return future.get(socketTimeout, TimeUnit.MILLISECONDS);
-        } catch (Exception e) {
-            Log.e(UdpShutdownPerformer.class.getSimpleName(), e.getMessage(), e);
-            return e.getMessage();
+        ResultPair<InetAddress> resultPair = future.get(socketTimeout, TimeUnit.MILLISECONDS);
+        if (!resultPair.isSuccess()) {
+            throw new RuntimeException(resultPair.getError());
         }
+        return resultPair.getResult();
     }
 }
