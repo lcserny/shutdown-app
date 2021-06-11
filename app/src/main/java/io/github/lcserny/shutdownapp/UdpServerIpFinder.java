@@ -13,14 +13,19 @@ import java.net.InetAddress;
 
 import static io.github.lcserny.shutdownapp.UdpFindIPExecutor.*;
 
-class UdpClient {
+public class UdpServerIpFinder {
+
+    public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
+    public static final int DEFAULT_SOCKET_TIMEOUT = 5000;
+    public static final String PROXY_PORT_KEY = "PROXY_PORT";
+    public static final int DEFAULT_PROXY_PORT = 41234;
 
     private static final String DEVICE_ORIGIN = "ANDROID";
 
     private final WifiManager wifiManager;
     private final SharedPreferences preferences;
 
-    public UdpClient(WifiManager wifiManager, SharedPreferences preferences) {
+    public UdpServerIpFinder(WifiManager wifiManager, SharedPreferences preferences) {
         this.wifiManager = wifiManager;
         this.preferences = preferences;
     }
@@ -38,7 +43,7 @@ class UdpClient {
 
             return ResultPair.ResultPairBuilder.success(receivePacket.getAddress());
         } catch (Exception e) {
-            Log.e(UdpClient.class.getSimpleName(), e.getMessage(), e);
+            Log.e(UdpServerIpFinder.class.getSimpleName(), e.getMessage(), e);
             return ResultPair.ResultPairBuilder.failure(e.getMessage());
         }
     }

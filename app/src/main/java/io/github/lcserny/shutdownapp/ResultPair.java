@@ -35,4 +35,15 @@ public class ResultPair<T> {
             return new ResultPair<>(error, null);
         }
     }
+
+    public static class EmptyResultPair extends ResultPair<Void> {
+
+        public EmptyResultPair(String error) {
+            super(error, null);
+        }
+
+        public EmptyResultPair() {
+            super(null, null);
+        }
+    }
 }

@@ -11,6 +11,7 @@
     <string name="config_label">Config</string>
     <string name="save_config_label">Save</string>
     <string name="proxy_port_label">UDP Proxy Port</string>
+    <string name="proxy_http_port_label">HTTP Proxy Port</string>
 
     <string name="socket_timeout_label">Socket Timeout (ms)</string>
     <string-array name="socket_timeout_values">

@@ -38,6 +38,26 @@
             tools:text="41234"
             android:layout_marginTop="8dp"/>
 
+    <TextView
+            android:text="@string/proxy_http_port_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:id="@+id/proxyHttpPorLabelView"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/proxyHttpPorView"
+            android:gravity="center"
+            android:width="100dp"
+            android:layout_gravity="center"
+            tools:text="8077"
+            android:layout_marginTop="8dp"/>
+
     <Button
             android:text="@string/save_config_label"
             android:layout_width="wrap_content"

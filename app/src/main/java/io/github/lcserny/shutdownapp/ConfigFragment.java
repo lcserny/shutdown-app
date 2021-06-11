@@ -10,7 +10,9 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static io.github.lcserny.shutdownapp.UdpFindIPExecutor.*;
+import static io.github.lcserny.shutdownapp.UdpServerIpFinder.*;
+import static io.github.lcserny.shutdownapp.shutdown.HttpShutdownClient.DEFAULT_PROXY_HTTP_PORT;
+import static io.github.lcserny.shutdownapp.shutdown.HttpShutdownClient.PROXY_HTTP_PORT_KEY;
 
 public class ConfigFragment extends AbstractBackstackFragment {
 
@@ -48,8 +50,13 @@ public class ConfigFragment extends AbstractBackstackFragment {
         EditText proxyPortView = view.findViewById(R.id.proxyPorView);
         proxyPortView.setText(String.valueOf(proxyPort));
 
+        int proxyHttpPort = preferences.getInt(PROXY_HTTP_PORT_KEY, DEFAULT_PROXY_HTTP_PORT);
+        EditText proxyHttpPortView = view.findViewById(R.id.proxyHttpPorView);
+        proxyHttpPortView.setText(String.valueOf(proxyHttpPort));
+
         Button saveBtn = view.findViewById(R.id.saveView);
-        saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context, socketTimeoutSpinner, proxyPortView));
+        saveBtn.setOnClickListener(new SaveOnClickListener(preferences, context,
+                socketTimeoutSpinner, proxyPortView, proxyHttpPortView));
     }
 
     @Override
