@@ -23,11 +23,12 @@ public class SimpleShutdownPerformer implements ShutdownPerformer {
 
     @Override
     public String shutdown(String seconds) {
+        if (!TextUtils.isDigitsOnly(seconds) || seconds.contains("-")) {
+            seconds = "0";
+        }
+
         try {
             String ip = findIpInAnotherThread();
-            if (!TextUtils.isDigitsOnly(seconds) || seconds.contains("-")) {
-                seconds = "0";
-            }
             shutdownFromAnotherThread(ip, seconds);
             return "Shutting down server";
         } catch (Exception e) {
