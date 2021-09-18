@@ -30,7 +30,7 @@ public class UdpServerIpFinder {
         this.preferences = preferences;
     }
 
-    ResultPair<InetAddress> findIp() {
+    public ResultPair<InetAddress> findIp() {
         try (DatagramSocket socket = createSocket()) {
             byte[] sendData = DEVICE_ORIGIN.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
