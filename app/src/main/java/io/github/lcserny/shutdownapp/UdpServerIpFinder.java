@@ -11,8 +11,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import static io.github.lcserny.shutdownapp.UdpFindIPExecutor.*;
-
 public class UdpServerIpFinder {
 
     public static final String SOCKET_TIMEOUT_KEY = "NETWORK_SCAN_SOCKET_TIMEOUT";
