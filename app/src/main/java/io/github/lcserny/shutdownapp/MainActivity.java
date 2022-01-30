@@ -2,7 +2,7 @@ package io.github.lcserny.shutdownapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
+import android.net.nsd.NsdManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity implements MainFragmentRepla
     }
 
     private void initFragmentsMap() {
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        NsdManager nsdManager = (NsdManager) getSystemService(Context.NSD_SERVICE);
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        activityFragments.put(R.id.mainMenuBack, new CommandsListFragment(CommandsProvider.provide(wifiManager, preferences)));
+        activityFragments.put(R.id.mainMenuBack, new CommandsListFragment(CommandsProvider.provide(nsdManager, preferences)));
         activityFragments.put(R.id.mainMenuConfig, new ConfigFragment());
     }
 

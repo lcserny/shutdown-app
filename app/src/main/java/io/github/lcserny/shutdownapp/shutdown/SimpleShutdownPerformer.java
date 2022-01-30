@@ -1,7 +1,7 @@
 package io.github.lcserny.shutdownapp.shutdown;
 
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
+import android.net.nsd.NsdManager;
 import android.text.TextUtils;
 import android.util.Log;
 import io.github.lcserny.shutdownapp.ResultPair;
@@ -13,11 +13,13 @@ import java.util.concurrent.Callable;
 
 public class SimpleShutdownPerformer implements ShutdownPerformer {
 
-    private final WifiManager wifiManager;
+    private static final String HOSTNAME = "winlegion";
+
+    private final NsdManager nsdManager;
     private final SharedPreferences preferences;
 
-    public SimpleShutdownPerformer(WifiManager wifiManager, SharedPreferences preferences) {
-        this.wifiManager = wifiManager;
+    public SimpleShutdownPerformer(NsdManager nsdManager, SharedPreferences preferences) {
+        this.nsdManager = nsdManager;
         this.preferences = preferences;
     }
 
@@ -42,8 +44,8 @@ public class SimpleShutdownPerformer implements ShutdownPerformer {
         InetAddress address = findIpExecutor.execute(new Callable<ResultPair<InetAddress>>() {
             @Override
             public ResultPair<InetAddress> call() throws Exception {
-                UdpServerIpFinder ipFinder = new UdpServerIpFinder(wifiManager, preferences);
-                return ipFinder.findIp();
+                UdpServerIpFinder ipFinder = new UdpServerIpFinder(nsdManager, preferences);
+                return ipFinder.findIp(HOSTNAME);
             }
         });
         return address.getHostAddress();
