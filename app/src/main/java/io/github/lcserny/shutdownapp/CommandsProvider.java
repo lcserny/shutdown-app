@@ -2,6 +2,8 @@ package io.github.lcserny.shutdownapp;
 
 import android.content.SharedPreferences;
 import android.net.nsd.NsdManager;
+import android.net.wifi.WifiManager;
+
 import io.github.lcserny.shutdownapp.shutdown.ShutdownFragment;
 import io.github.lcserny.shutdownapp.shutdown.SimpleShutdownPerformer;
 
@@ -15,15 +17,15 @@ class CommandsProvider {
     private CommandsProvider() {
     }
 
-    static List<Command> provide(NsdManager nsdManager, SharedPreferences preferences) {
+    static List<Command> provide(WifiManager wifiManager, SharedPreferences preferences) {
         if (cachedCommands.isEmpty()) {
-            initCommands(nsdManager, preferences);
+            initCommands(wifiManager, preferences);
         }
         return cachedCommands;
     }
 
-    private static void initCommands(NsdManager nsdManager, SharedPreferences preferences) {
-        SimpleShutdownPerformer performer = new SimpleShutdownPerformer(nsdManager, preferences);
+    private static void initCommands(WifiManager wifiManager, SharedPreferences preferences) {
+        SimpleShutdownPerformer performer = new SimpleShutdownPerformer(wifiManager, preferences);
         Command shutdownCommand = new Command(R.string.shutdown_button_label, new ShutdownFragment(performer));
 
         cachedCommands.add(shutdownCommand);

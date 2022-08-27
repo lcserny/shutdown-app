@@ -1,25 +1,26 @@
 package io.github.lcserny.shutdownapp.shutdown;
 
 import android.content.SharedPreferences;
-import android.net.nsd.NsdManager;
+import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 import android.util.Log;
-import io.github.lcserny.shutdownapp.ResultPair;
-import io.github.lcserny.shutdownapp.ResultPairExecutor;
-import io.github.lcserny.shutdownapp.UdpServerIpFinder;
 
 import java.net.InetAddress;
 import java.util.concurrent.Callable;
+
+import io.github.lcserny.shutdownapp.ResultPair;
+import io.github.lcserny.shutdownapp.ResultPairExecutor;
+import io.github.lcserny.shutdownapp.UdpServerIpFinder;
 
 public class SimpleShutdownPerformer implements ShutdownPerformer {
 
     private static final String HOSTNAME = "winlegion";
 
-    private final NsdManager nsdManager;
+    private final WifiManager wifiManager;
     private final SharedPreferences preferences;
 
-    public SimpleShutdownPerformer(NsdManager nsdManager, SharedPreferences preferences) {
-        this.nsdManager = nsdManager;
+    public SimpleShutdownPerformer(WifiManager wifiManager, SharedPreferences preferences) {
+        this.wifiManager = wifiManager;
         this.preferences = preferences;
     }
 
@@ -44,7 +45,7 @@ public class SimpleShutdownPerformer implements ShutdownPerformer {
         InetAddress address = findIpExecutor.execute(new Callable<ResultPair<InetAddress>>() {
             @Override
             public ResultPair<InetAddress> call() throws Exception {
-                UdpServerIpFinder ipFinder = new UdpServerIpFinder(nsdManager, preferences);
+                UdpServerIpFinder ipFinder = new UdpServerIpFinder(wifiManager, preferences);
                 return ipFinder.findIp(HOSTNAME);
             }
         });
