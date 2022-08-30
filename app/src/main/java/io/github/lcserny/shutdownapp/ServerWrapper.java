@@ -1,11 +1,11 @@
 package io.github.lcserny.shutdownapp;
 
-class Command {
+class ServerWrapper {
 
     private final String label;
     private final AbstractBackstackFragment fragment;
 
-    public Command(String label, AbstractBackstackFragment fragment) {
+    public ServerWrapper(String label, AbstractBackstackFragment fragment) {
         this.label = label;
         this.fragment = fragment;
     }

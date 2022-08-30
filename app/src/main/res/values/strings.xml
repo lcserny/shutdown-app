@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LegionControl</string>
 
-    <string name="commands_list_label">Commands</string>
+    <string name="server_list_label">Servers</string>
 
     <string name="shutdown_delay">Shutdown delay</string>
     <string name="shutdown_button_label">Shutdown</string>

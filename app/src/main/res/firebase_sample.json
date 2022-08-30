@@ -1,0 +1,15 @@
+{
+	"servers": {
+		"winlegion": {
+			"lastPingDate": "13946084968730", // updated by server for every ping, if > 1min from currentDate, server is offline
+			"actionsAvailable": [ // updated by server for every ping
+				"shutdown"
+			],
+			"actionsPending": [ // on each new server restart this gets overwritten with actionsPending empty
+				// { added by client, when picked-up by server, first its removed from here then its executed by server
+				"shutdown"
+				// }
+			]
+		}
+	}
+}

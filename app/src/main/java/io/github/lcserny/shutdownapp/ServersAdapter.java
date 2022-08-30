@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.ViewHolder> {
+public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHolder> {
 
-    private final List<Command> commandList;
+    private final List<ServerWrapper> serverWrapperList;
     private final MainFragmentReplacer fragmentReplacer;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -25,8 +25,8 @@ public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.ViewHo
         }
     }
 
-    CommandsAdapter(List<Command> commandList, MainFragmentReplacer fragmentReplacer) {
-        this.commandList = commandList;
+    ServersAdapter(List<ServerWrapper> serverWrapperList, MainFragmentReplacer fragmentReplacer) {
+        this.serverWrapperList = serverWrapperList;
         this.fragmentReplacer = fragmentReplacer;
     }
 
@@ -41,18 +41,18 @@ public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Command command = commandList.get(position);
-        holder.button.setText(command.getLabel());
+        final ServerWrapper serverWrapper = serverWrapperList.get(position);
+        holder.button.setText(serverWrapper.getLabel());
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentReplacer.replaceMainFragmentWith(command.getFragment());
+                fragmentReplacer.replaceMainFragmentWith(serverWrapper.getFragment());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return commandList.size();
+        return serverWrapperList.size();
     }
 }

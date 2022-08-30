@@ -26,4 +26,4 @@ hs_err_pid*
 .gradle/
 app/build/
 build/
-/app/src/main/res/google-services.json
+/app/google-services.json

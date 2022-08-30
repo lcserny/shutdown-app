@@ -13,18 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CommandsListFragment extends AbstractBackstackFragment {
+public class ServersListFragment extends AbstractBackstackFragment {
 
-    private static final String BACKSTACK_NAME = "commandsListFragment";
-    private static final String TITLE = "Commands";
+    private static final String BACKSTACK_NAME = "serversListFragment";
+    private static final String TITLE = "Servers";
 
-    private final List<Command> commandsList;
+    private List<ServerWrapper> serverWrapperList;
 
     private MainActivity mainActivity;
     private MainFragmentReplacer fragmentReplacer;
-
-    public CommandsListFragment(List<Command> commandsList) {
-        this.commandsList = commandsList;
+    public void setServerWrapperList(List<ServerWrapper> serverWrapperList) {
+        this.serverWrapperList = serverWrapperList;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CommandsListFragment extends AbstractBackstackFragment {
         titleView.setText(TITLE);
 
         RecyclerView recyclerView = view.findViewById(R.id.simpleItemListRecyclerView);
-        recyclerView.setAdapter(new CommandsAdapter(commandsList, fragmentReplacer));
+        recyclerView.setAdapter(new ServersAdapter(serverWrapperList, fragmentReplacer));
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
     }
 
